@@ -1,0 +1,67 @@
+﻿@model Details
+
+<div class="container mx-auto max-w-3xl p-6">
+    <div class="rounded-lg bg-gray-100 p-6 shadow-lg">
+        <h1 class="mb-6 text-center text-3xl font-bold text-gray-800">@((Model.ID != 0) ? "Update Item" : "Add New Item")</h1>
+
+        <!-- Form Start -->
+        <form method="post" class="space-y-6">
+            <input asp-for="@(Model.ID)" hidden />
+
+            <!-- Item Name -->
+            <div>
+                <label for="Items" class="block text-lg font-medium text-gray-700">Item Name</label>
+                <input type="text" asp-for="Items" id="Items" name="Items" 
+                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
+                    required placeholder="Enter item name" />
+                <span asp-validation-for="Items" class="mt-1 text-sm text-red-600"></span>
+            </div>
+
+            <!-- Manufacturing Date -->
+            <div>
+                <label for="MFD" class="block text-lg font-medium text-gray-700">Manufacturing Date</label>
+                <input type="date" asp-for="MFD" id="MFD" name="MFD" 
+                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
+                    required />
+            </div>
+
+            <!-- Expiry Date -->
+            <div>
+                <label for="EXD" class="block text-lg font-medium text-gray-700">Expiry Date</label>
+                <input type="date" asp-for="EXD" id="EXD" name="EXD" 
+                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
+                    required />
+            </div>
+            <!-- Price -->
+            <div>
+                <label for="Price" class="block text-lg font-medium text-gray-700">Price</label>
+                <input type="number" asp-for="Price" id="Price" name="Price" 
+                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
+                    required placeholder="Enter price" />
+            </div>
+
+
+            <!-- Quantity -->
+            <div>
+                <label for="Quantity" class="block text-lg font-medium text-gray-700">Quantity</label>
+                <input type="number" asp-for="Quantity" id="Quantity" name="Quantity" 
+                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
+                    required placeholder="Enter quantity" />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex items-center justify-between">
+                <button type="submit" 
+                    class="rounded-lg bg-blue-600 px-6 py-3 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl">
+                    @((Model.ID != 0) ? "Update Item" : "Add Item")
+                </button>
+
+                <a asp-action="Index" 
+                    class="rounded-lg px-4 py-3 text-lg font-semibold text-gray-600 underline transition-all duration-300 hover:text-gray-800">
+                    Back to List
+                </a>
+            </div>
+        </form>
+        <!-- Form End -->
+    </div>
+</div>

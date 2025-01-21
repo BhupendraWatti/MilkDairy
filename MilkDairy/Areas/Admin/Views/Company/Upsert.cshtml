@@ -1,0 +1,68 @@
+﻿@model Company
+
+<div class="container mx-auto max-w-3xl p-6">
+    <div class="rounded-lg bg-gray-100 p-6 shadow-lg">
+        <h1 class="mb-6 text-center text-3xl font-bold text-gray-800">@((Model.Id != 0) ? "Update Item" : "Add New Item")</h1>
+
+        <!-- Form Start -->
+        <form method="post" class="space-y-6">
+            <input asp-for="@(Model.Id)" hidden />
+
+            <!-- Item Name -->
+            <div>
+                <label for="Name" class="block text-lg font-medium text-gray-700">Name</label>
+                <input type="text" asp-for="Name" id="Name" name="Name"
+                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300"
+                       required placeholder="Enter item name" />
+                <span asp-validation-for="Name" class="mt-1 text-sm text-red-600"></span>
+            </div>
+
+           
+            <div>
+                <label for="StreetAddress" class="block text-lg font-medium text-gray-700">Enter Address here</label>
+                <input type="text" asp-for="StreetAddress" id="StreetAddress" name="StreetAddress"
+                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" placeholder="Street Address"    required />
+            </div>
+
+           
+            <div>
+                <label for="State" class="block text-lg font-medium text-gray-700">State </label>
+                <input type="text" asp-for="State" id="State" name="State"
+                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" placeholder="State name"  required />
+            </div>
+            
+            <div>
+                <label for="City" class="block text-lg font-medium text-gray-700">City</label>
+                <input type="text" asp-for="City" id="City" name="City"
+                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300"
+                       required placeholder="City Name" />
+            </div>
+
+            <div>
+                <label for="Postal" class="block text-lg font-medium text-gray-700">Postal Code</label>
+                <input type="text" asp-for="PostalCode" id="PostalCode" name="PostalCode"
+                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300"
+                       required placeholder="Postal Code" />
+            </div><div>
+                <label for="PhoneNumber" class="block text-lg font-medium text-gray-700">Phone Number</label>
+                <input type="text" asp-for="PhoneNumber" id="PhoneNumber" name="PhoneNumber"
+                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300"
+                       required placeholder="Phone number" />
+            </div>
+
+           
+            <div class="flex items-center justify-between">
+                <button type="submit"
+                        class="rounded-lg bg-blue-600 px-6 py-3 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl">
+                    @((Model.Id != 0) ? "Update Company" : "Add Company")
+                </button>
+
+                <a asp-action="Index"
+                   class="rounded-lg px-4 py-3 text-lg font-semibold text-gray-600 underline transition-all duration-300 hover:text-gray-800">
+                    Back to List
+                </a>
+            </div>
+        </form>
+        <!-- Form End -->
+    </div>
+</div>

@@ -1,0 +1,40 @@
+﻿@model List<Product>
+<partial name="_notificationView" />
+
+<div class="container mx-auto px-4 py-6">
+    <!-- Header Section -->
+    <div class="mb-6 mt-4 flex items-center justify-evenly">
+        <h1 class="text-4xl font-semibold text-gray-800">Product List</h1>
+        <a asp-action="Upsert" class="rounded bg-blue-600 px-6 py-2 font-medium text-white transition duration-200 ease-in-out hover:bg-blue-700">
+            Create New Product
+        </a>
+    </div>
+
+    <!-- Table Section with DataTable -->
+    <div class="m-auto w-fit overflow-x-auto rounded-lg bg-white p-3 shadow-md">
+        
+        <table id="myTable" class="mt-5 w-full border-collapse border">
+            <thead class="w-fit rounded-r bg-gray-200">
+                <tr>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Name</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Description</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Brand</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Weight/Volume</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Ingredients</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Unit Price</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Units In Stock</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium">Is Available</th>
+                    <th class="px-4 py-2 text-center text-sm font-medium">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be dynamically loaded here by DataTable -->
+            </tbody>
+        </table>
+       
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/product.js"></script>
+}

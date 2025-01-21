@@ -1,0 +1,58 @@
+﻿@model Product
+<div class="z-0 min-h-screen bg-gray-100 px-4 py-10">
+    <div class="mx-auto max-w-5xl overflow-hidden rounded-lg bg-white shadow-lg">
+        <!-- Product Top Section -->
+        <div class="grid-cols-1 grid gap-6 lg:grid-cols-2">
+            <!-- Product Image -->
+            <div class="flex items-center justify-center bg-gray-50 p-6">
+                <img src="@Model.ImgURL" alt="Product Image" class="max-h-[300px] rounded-lg shadow">
+            </div>
+
+            <!-- Product Details -->
+            <div class="p-6">
+                <h1 class="mb-4 text-3xl font-bold text-gray-800">@Model.Name</h1>
+                <p class="mb-2 text-gray-600"><span class="font-semibold">Brand : </span>@Model.Brand</p>
+                <p class="mb-2 text-gray-600"><span class="font-semibold">Ingredients:</span>@Model.Ingredients</p>
+                <p class="mb-4 text-gray-600"><span class="font-semibold">Description:</span>@Model.Description</p>
+
+                <!-- Product Price -->
+                <p class="mb-4 text-2xl font-semibold text-green-600">@Model.UnitPrice.ToString("c")</p>
+
+                <!-- Availability and Stock -->
+                <div class="flex items-center space-x-4">
+                    <p class="text-gray-600"><span class="font-semibold">Weight/Volume:</span> @Model.WeightVolume</p>
+                    <p class="text-gray-600"><span class="font-semibold">Units in Stock:</span> @Model.UnitsInStock</p>
+                </div>
+               
+                    <div class="mt-4">
+                        @if (Model.IsAvailable)
+                        {
+                            <span class="inline-block rounded-full bg-green-500 px-4 py-2 text-sm font-semibold text-white">
+                                In Stock
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="inline-block rounded-full bg-red-500 px-4 py-2 text-sm font-semibold text-white">
+                                Not in Stock
+                            </span>
+                        }
+                    </div>
+                
+
+                <!-- Add to Cart Button -->
+                <div class="mt-6">
+                    <button class="w-full rounded-lg bg-blue-500 py-3 text-lg font-semibold text-white transition hover:bg-blue-600">
+                        Add to Cart
+                    </button>
+                    <div class="mt-6">
+                        <a asp-action="Index" class="block w-full rounded-lg bg-blue-600 px-4 py-2 text-center font-semibold text-white transition duration-200 hover:bg-blue-500">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

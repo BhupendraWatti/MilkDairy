@@ -1,0 +1,105 @@
+﻿@model Product
+
+<div class="container mx-auto p-4">
+    <h1 class="mb-4 text-3xl font-bold">@((Model.Id != 0) ? "Update" : "Create") Product</h1>
+
+    <form method="post" class="mx-auto max-w-screen-md" enctype="multipart/form-data">
+        <input asp-for="@(Model.Id)" hidden />
+        <input asp-for="@(Model.ImgURL)" hidden />
+
+        <!-- Other input fields -->
+        <!-- Add Image Display Section -->
+        
+        <div class="mb-4">
+            <label asp-for="Name" class="mb-2 block font-bold text-gray-700">Name</label>
+            <input asp-for="Name" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="Name" class="text-sm text-red-500"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Description" class="mb-2 block font-bold text-gray-700">Description</label>
+            <textarea asp-for="Description" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"></textarea>
+
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Brand" class="mb-2 block font-bold text-gray-700">Brand</label>
+            <input asp-for="Brand" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="Brand" class="text-sm text-red-500"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="WeightVolume" class="mb-2 block font-bold text-gray-700">Weight/Volume</label>
+            <input asp-for="WeightVolume" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="WeightVolume" class="text-sm text-red-500"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Ingredients" class="mb-2 block font-bold text-gray-700">Ingredients</label>
+            <textarea asp-for="Ingredients" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"></textarea>
+            <span asp-validation-for="Ingredients" class="text-sm text-red-500"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="UnitPrice" class="mb-2 block font-bold text-gray-700">Unit Price</label>
+            <input asp-for="UnitPrice" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="UnitPrice" class="text-sm text-red-500"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="UnitsInStock" class="mb-2 block font-bold text-gray-700">Units In Stock</label>
+            <input asp-for="UnitsInStock" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline" />
+            <span asp-validation-for="UnitsInStock" class="text-sm text-red-500"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="IsAvailable" class="mb-2 block font-bold text-gray-700">Is Available</label>
+            <input asp-for="IsAvailable" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" />
+            <span asp-validation-for="IsAvailable" class="text-sm text-red-500"></span>
+        </div>
+        
+        <div class="mb-4">
+            <label class="mb-2 block font-bold text-gray-700">Product Image</label>
+            <input type="file" name="file" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" accept="image/*" />
+
+            <div class="border-2 relative flex h-64 items-center justify-center rounded-lg border-dashed bg-gray-100">
+                @if (!string.IsNullOrEmpty(Model.ImgURL))
+                {
+                    <img src="@Model.ImgURL" alt="Product Image" class="mt-2 max-h-60 max-w-full rounded object-cover">
+                }
+                else
+                {
+                    <p class="text-gray-500">No Image Selected</p>
+                }
+            </div>
+            <span asp-validation-for="ImgURL" class="text-sm text-red-500"></span>
+        </div>
+
+        <div class="flex items-center justify-between">
+            @if (Model.Id != 0)
+            {
+                <button type="submit" class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline">Update</button>
+            }
+            else
+            {
+                <button type="submit" class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none focus:shadow-outline">Create</button>
+            }
+
+            <a asp-action="Index" class="inline-block align-baseline text-sm font-bold text-blue-500 hover:text-blue-800">Back to List</a>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons lists table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |  align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            forced_root_block: false, // Disable wrapping text in <p> tags
+            force_br_newlines: true,  // Add <br> instead of <p>
+            force_p_newlines: false,  // Prevent <p> behavior
+        });
+    </script>
+}

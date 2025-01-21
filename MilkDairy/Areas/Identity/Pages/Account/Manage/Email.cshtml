@@ -1,0 +1,42 @@
+﻿@page
+@using MilkDairy.Areas.Identity.Pages.Account.Manage
+@model EmailModel
+@{
+    ViewData["Title"] = "Manage Email";
+    ViewData["ActivePage"] = ManageNavPages.Email;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="flex flex-wrap">
+    <div class="w-full md:w-1/2">
+        <form id="email-form" method="post">
+            <div asp-validation-summary="All" class="mb-4 text-red-500" role="alert"></div>
+            @if (Model.IsEmailConfirmed)
+            {
+                <div class="mb-3">
+                    <input asp-for="Email" class="block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-green-500 focus:border-green-500" disabled />
+                    <label asp-for="Email" class="text-gray-700">Email</label>
+                    <span class="inline-flex h-5 items-center justify-center rounded-full bg-green-100 px-2.5 py-1 font-bold text-green-700">✓</span>
+                </div>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <input asp-for="Email" class="block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled />
+                    <label asp-for="Email" class="text-gray-700">Email</label>
+                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="text-blue-500 hover:underline">Send verification email</button>
+                </div>
+            }
+            <div class="mb-3">
+                <input asp-for="Input.NewEmail" class="block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
+                <label asp-for="Input.NewEmail" class="text-gray-700">New Email</label>
+                <span asp-validation-for="Input.NewEmail" class="text-red-500"></span>
+            </div>
+            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-full rounded-md bg-blue-500 px-4 py-2 font-bold text-white shadow hover:bg-blue-700">Change email</button>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

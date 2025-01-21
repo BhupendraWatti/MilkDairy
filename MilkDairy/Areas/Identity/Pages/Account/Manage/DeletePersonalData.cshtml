@@ -1,0 +1,29 @@
+﻿@page
+@using MilkDairy.Areas.Identity.Pages.Account.Manage
+@model DeletePersonalDataModel
+@{
+    ViewData["Title"] = "Delete Personal Data";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<h3>@ViewData["Title"]</h3>
+<div class="relative mb-4 rounded border border-yellow-400 bg-yellow-100 px-4 py-3 text-yellow-700" role="alert">
+    <strong class="font-bold">Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+</div>
+<div>
+    <form id="delete-user" method="post">
+        <div asp-validation-summary="ModelOnly" class="mb-4 text-red-500" role="alert"></div>
+        @if (Model.RequirePassword)
+        {
+            <div class="mb-3">
+                <input asp-for="Input.Password" class="block w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-red-500 focus:border-red-500" autocomplete="current-password" aria-required="true" placeholder="Please enter your password." />
+                <label asp-for="Input.Password" class="text-gray-700">Password</label>
+                <span asp-validation-for="Input.Password" class="text-red-500"></span>
+            </div>
+        }
+        <button class="w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white shadow hover:bg-red-700" type="submit">Delete data and close my account</button>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MilkDairy</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MilkDairy.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    
+
+   
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <header>
+        <nav class="bg-purple-800">
+            <div class="container mx-auto flex items-center px-4 py-2">
+                <ul class="hidden flex-row md:flex">
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Home</a>
+                    <a asp-controller="Home" asp-action="Privacy" class="rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Privacy</a>
+                    <li class="group relative text-white">
+                        <span class="block cursor-pointer px-4 hover:text-gray-300 hover:rounded-full">Items</span> 
+                        <div class="group-hover:block z-10 absolute hidden w-40 rounded-md bg-white py-2 shadow-md">
+                            <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Details </a>
+                            <a asp-area="Admin"  asp-controller="Product" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Product</a>
+                            <a asp-area="Admin"  asp-controller="Company" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Product</a>
+                        </div>
+                    </li>
+                </ul>
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+    </header>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <main role="main" class="pb-12">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.tiny.cloud/1/7razhavthb5zytelw92e5coq2g8hrjjjoilmpwo3ejaldwv1/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,50 @@
+﻿@model List<Details>
+<partial name="_notificationView" />
+
+<div class="container mx-auto rounded-lg bg-white p-6 shadow-md">
+    <div class="mb-4 flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-700">Product List</h1>
+        <a asp-action="Upsert" asp-controller="Details" class="rounded-md bg-blue-600 px-4 py-2 text-white shadow hover:bg-blue-700"> Add New Item </a>
+    </div>
+
+    <table id="mytable" class="w-full table-auto border-collapse border border-gray-300">
+        <thead>
+            <tr class="bg-gray-200 text-left">
+                <th class="border border-gray-300 px-4 py-2">ID</th>
+                <th class="border border-gray-300 px-4 py-2">Item Name</th>
+                <th class="border border-gray-300 px-4 py-2">MFD</th>
+                <th class="border border-gray-300 px-4 py-2">EXD</th>
+                <th class="border border-gray-300 px-4 py-2">Price (Rs)</th>
+                <th class="border border-gray-300 px-4 py-2">Quantity(in liter/KG)</th>
+                <th class="border border-gray-300 px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        @* <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2">@item.ID</td>
+                    <td class="border border-gray-300 px-4 py-2">@item.Items</td>
+                    <td class="border border-gray-300 px-4 py-2">@item.MFD.ToShortDateString()</td>
+                    <td class="border border-gray-300 px-4 py-2">@item.EXD.ToShortDateString()</td>
+                    <td class="border border-gray-300 px-4 py-2">@item.Price</td>
+                    <td class="border border-gray-300 px-4 py-2">@item.Quantity</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <div class="flex justify-between">
+                            <!-- Edit Button --> <a asp-action="Upsert" asp-controller="Details" asp-route-id="@item.ID"
+                               class="flex-1 mx-1 rounded-md bg-green-500 px-3 py-1 text-center text-white shadow hover:bg-green-600">Edit </a>
+
+                            <!-- Delete Button -->
+                            <a asp-action="Delete" asp-controller="Details" asp-route-id="@item.ID" class="flex-1 mx-1 rounded-md bg-red-500 px-3 py-1 text-center text-white shadow hover:bg-red-600">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody> *@
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/details.js"> </script>
+}
+                           

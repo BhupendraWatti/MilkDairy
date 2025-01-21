@@ -1,0 +1,31 @@
+﻿@page
+@using MilkDairy.Areas.Identity.Pages.Account.Manage
+@model ShowRecoveryCodesModel
+@{
+    ViewData["Title"] = "Recovery codes";
+    ViewData["ActivePage"] = "TwoFactorAuthentication";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<h3>@ViewData["Title"]</h3>
+<div class="relative mb-4 rounded border border-yellow-400 bg-yellow-100 px-4 py-3 text-yellow-700" role="alert">
+    <p>
+        <strong class="font-bold">Put these codes in a safe place.</strong>
+    </p>
+    <p>
+        If you lose your device and don't have the recovery codes you will lose access to your account.
+    </p>
+</div>
+<div class="flex flex-col">
+    <div class="w-full">
+        @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
+        {
+            <code class="mr-2 rounded-md bg-gray-100 px-2 py-1">@Model.RecoveryCodes[row]</code>
+
+            <code class="rounded-md bg-gray-100 px-2 py-1">@Model.RecoveryCodes[row + 1]</code>
+
+            <br />
+        }
+    </div>
+</div>

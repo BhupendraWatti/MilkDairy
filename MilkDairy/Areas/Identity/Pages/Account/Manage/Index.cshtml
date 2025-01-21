@@ -1,0 +1,73 @@
+﻿@page
+@using MilkDairy.Areas.Identity.Pages.Account.Manage
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<div class="container mx-auto max-w-4xl rounded-lg bg-gray-50 p-8 shadow-lg">
+    <!-- Page Header -->
+    <h3 class="mb-8 text-3xl font-extrabold text-gray-900">@ViewData["Title"]</h3>
+    <partial name="_StatusMessage" for="StatusMessage" />
+
+    <div class="grid gap-8 sm:grid-cols-1 lg:grid-cols-2">
+        <!-- Profile Details Section -->
+        <div class="rounded-lg bg-white p-6 shadow-md">
+            <h4 class="mb-6 text-xl font-semibold text-gray-800">Profile Details</h4>
+            <form id="profile-form" method="post" class="space-y-6">
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="text-red-500" role="alert"></div>
+
+                <!-- Username Field -->
+                <div>
+                    <label asp-for="Username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" asp-for="Username" class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Your username" disabled />
+                </div>
+
+                <!-- Phone Number Field -->
+                <div>
+                    <label asp-for="Input.PhoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input type="text" asp-for="Input.PhoneNumber" class="mt-2 w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter phone number" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-red-500"></span>
+                </div>
+
+                <!-- Save Changes Button -->
+                <button id="update-profile-button" type="submit" class="w-full rounded-lg bg-blue-600 px-6 py-2 text-center text-sm font-bold text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Save Changes
+                </button>
+            </form>
+        </div>
+
+        <!-- Manage Account Options Section -->
+        <div class="rounded-lg bg-white p-6 shadow-md">
+            <h4 class="mb-6 text-xl font-semibold text-gray-800">Manage Account Options</h4>
+            <ul class="space-y-4 text-gray-700">
+                <li>
+                    <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword" class="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium hover:bg-blue-100">
+                        Change Password
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="Identity" asp-page="/Account/Manage/Email" class="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium hover:bg-blue-100">
+                        Update Email Address
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication" class="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium hover:bg-blue-100">
+                        Manage Two-Factor Authentication
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="Identity" asp-page="/Account/Manage/PersonalData" class="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium hover:bg-blue-100">
+                        Download Personal Data
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
