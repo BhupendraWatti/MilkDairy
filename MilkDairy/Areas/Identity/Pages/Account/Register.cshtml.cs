@@ -13,31 +13,33 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using MilkDairy.DataAccess.Data;
 using MilkDairy.DataAccess.Repository.IRepository;
 using MilkDairy.Model;
 using MilkDairy.Model.Models;
 using MilkDairy.Utility;
+using MIlkDairy.DataAccess.Repository.IRepository;
 namespace MilkDairy.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IRepository<Company> _appDbContext;
+        private readonly IUnitOfWork _unitofWork;
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            IUserStore<ApplicationUser> userStore,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IRepository<Company> _Db)
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -46,7 +48,8 @@ namespace MilkDairy.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _appDbContext = _Db;
+            _unitofWork = unitOfWork;
+            
         }
 
         /// <summary>
@@ -111,7 +114,7 @@ namespace MilkDairy.Areas.Identity.Pages.Account
             public string State { get; set; }
             public string Pincode { get; set; }
             public string Phonenumber { get; set; }
-            public int CompanyID { get; set; }
+            public int? CompanyID { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> CompanyList { get; set; }
 
@@ -120,34 +123,57 @@ namespace MilkDairy.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
+            
+
+            var roleList = _roleManager.Roles.Select(x => x.Name).ToList();
+            var companyList = _unitofWork.CompanyRepo.GetAll().ToList(); // Ensure this is not null
+            
+            roleList = _roleManager.Roles.Select(x => x.Name).ToList();
+            if (roleList == null || !roleList.Any())
             {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Emplyoee)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Company)).GetAwaiter().GetResult();
+                throw new Exception("No roles found. Make sure roles are created.");
             }
+
+            if (companyList == null)
+            {
+                throw new Exception("CompanyRepo.GetAll() returned null.");
+            }
+
             Input = new()
             {
-                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                RoleList = roleList.Select(i => new SelectListItem
                 {
                     Text = i,
                     Value = i
                 }),
-                CompanyList = _appDbContext.GetAll().Select(i => new SelectListItem
+                CompanyList = companyList.Select(i => new SelectListItem
                 {
                     Text = i.Name,
-                    Value = i.ToString()
+                    Value = i.Id.ToString()
                 })
             };
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
+        
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (!ModelState.IsValid)
+            {
+                foreach (var key in ModelState.Keys)
+                {
+                    var errors = ModelState[key].Errors;
+                    foreach (var error in errors)
+                    {
+                        Console.WriteLine($"Key: {key}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -219,19 +245,19 @@ namespace MilkDairy.Areas.Identity.Pages.Account
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

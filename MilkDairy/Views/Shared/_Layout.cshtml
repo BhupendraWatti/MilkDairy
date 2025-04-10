@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpcontextAccessor
+
+@using MilkDairy.Utility
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,25 +15,51 @@
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
 
    
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <header>
-        <nav class="bg-purple-800">
-            <div class="container mx-auto flex items-center px-4 py-2">
+<body class="text-gray-900">
+    <header class="">
+        <nav class="flex justify-between bg-gradient-to-r from-purple-600 via-purple-400 to-violet-500 p-[20px]">
+            @* <div class="text-3xl font-extrabold"> MilkDairy </div> *@
+            <div class="container mx-auto flex items-center justify-between px-4 py-2">
                 <ul class="hidden flex-row md:flex">
-                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Home</a>
-                    <a asp-controller="Home" asp-action="Privacy" class="rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Privacy</a>
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="text-l rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Home</a>
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-l rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Order Management</a>
+                    @if(User.IsInRole(SD.Role_Admin)){
                     <li class="group relative text-white">
-                        <span class="block cursor-pointer px-4 hover:text-gray-300 hover:rounded-full">Items</span> 
-                        <div class="group-hover:block z-10 absolute hidden w-40 rounded-md bg-white py-2 shadow-md">
+                            <span class="rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Operations</span>
+                        <div class="text-l absolute z-10 hidden w-40 rounded-md bg-white py-2 font-medium shadow-md group-hover:block">
                             <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Details </a>
                             <a asp-area="Admin"  asp-controller="Product" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Product</a>
-                            <a asp-area="Admin"  asp-controller="Company" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Product</a>
+                            <a asp-area="Admin"  asp-controller="Company" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Company</a>
                         </div>
                     </li>
+                    <li class="group relative text-white">
+                        <span class="rounded-md p-[15px] font-semibold"> Household items</span>
+                            <div class="text-l absolute z-10 hidden w-40 rounded-md bg-white py-2 font-medium shadow-md group-hover:block">
+                                <a asp-area="Admin" asp-controller="subcategoiesMilk" asp-action="Index" class="block px-4 text-black hover:bg-gray-100">Milk</a>
+                        </div>
+
+                    </li>
+
+                        <li class="group relative text-white">
+                            <span class="rounded-md p-[15px] font-semibold">About User</span>
+                            <div class="text-l absolute z-10 hidden w-40 rounded-md bg-white py-2 font-medium shadow-md group-hover:block">
+                                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="block px-4 text-black hover:bg-gray-100">Company User</a>
+                            </div>
+
+                        </li>
+                    }
+                    
+                    <li>
+
+                            <a asp-area="Customer" asp-controller="cart" asp-action="Index" class="text-l rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full"> @await Component.InvokeAsync("ShoppingCart") </a>
+                    </li>
+                    
+                    
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
@@ -45,7 +75,7 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
+    
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.tiny.cloud/1/7razhavthb5zytelw92e5coq2g8hrjjjoilmpwo3ejaldwv1/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     @await RenderSectionAsync("Scripts", required: false)

@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MilkDairy.Models;
+using MilkDairy.Model.Models;
 
 namespace MilkDairy.Controllers
 {
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

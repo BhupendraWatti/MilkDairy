@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MilkDairy.Model;
 using MilkDairy.Model.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace MilkDairy.DataAccess.Data
 {
 
-    public class AppDbContext : IdentityDbContext<ApplicationUser>
+    public class AppDbContext : IdentityDbContext<ApplicationUser> 
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -15,8 +16,13 @@ namespace MilkDairy.DataAccess.Data
         }
         public DbSet<Details> Details { get; set; }
         public DbSet<Product> Product{ get; set; }
-        public DbSet<ApplicationUser> ApplicationUsers{ get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ShoppingCart> ShoppingCart { get; set; }
         public DbSet<Company> Company { get; set; }
+        public DbSet<subcategoiesMilk> MilkSubTypes {get; set; }
+
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -114,7 +120,10 @@ namespace MilkDairy.DataAccess.Data
                 ImgURL = "L:/TeraBoxDownload/C#/Advances C# projects/MilkDairy/wwwroot/images/Product/0dca2d5c-dcba-4980-a8ce-fa2b30ed6d36_.jpg"
 
             }
-                );
+            );
+            modelBuilder.Entity<ShoppingCart>()
+            .HasOne(s => s.Product).WithMany().HasForeignKey(s => s.ProductID).OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

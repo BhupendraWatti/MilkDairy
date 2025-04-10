@@ -10,14 +10,14 @@ namespace MilkDairy.Areas.Admin.Controllers
     [Area("Admin")]
     public class DetailsController : Controller
     {
-        private readonly IDetailsRepository _detialsRepo;
-        public DetailsController(IDetailsRepository db)
+        private readonly IUnitOfWork _unitOfWork;
+        public DetailsController(IUnitOfWork unitOfWork)
         {
-            _detialsRepo = db;
+            _unitOfWork= unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Details> objList = _detialsRepo.GetAll().ToList();
+            List<Details> objList = _unitOfWork.DetailsRepo.GetAll().ToList();
             return View(objList);
         }
         public IActionResult Upsert(int? id)
@@ -25,7 +25,7 @@ namespace MilkDairy.Areas.Admin.Controllers
             Details details = new Details();
             if (id != null && id > 0)
             {
-                details = _detialsRepo.Get(u => u.ID == id);
+                details = _unitOfWork.DetailsRepo.Get(u => u.ID == id);
                 if (details == null)
                 {
                     return NotFound();
@@ -42,15 +42,15 @@ namespace MilkDairy.Areas.Admin.Controllers
             {
                 if (obj.ID == 0)
                 {
-                    _detialsRepo.Add(obj);
+                    _unitOfWork.DetailsRepo.Add(obj);
                     TempData["Success"] = "Your details have been Added";
                 }
                 else
                 {
-                    _detialsRepo.Updatea(obj);
+                    _unitOfWork.DetailsRepo.Updatea(obj);
                     TempData["Success"] = "Your details has been Updated";
                 }
-                _detialsRepo.Save();
+                _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -60,7 +60,7 @@ namespace MilkDairy.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var listOfDetails = _detialsRepo.GetAll().Select(p => new
+            var listOfDetails = _unitOfWork.DetailsRepo.GetAll().Select(p => new
             {
                 p.ID,
                 p.Items,
@@ -76,13 +76,13 @@ namespace MilkDairy.Areas.Admin.Controllers
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var detailsItemtoDelete = _detialsRepo.Get(u => u.ID == id);
+            var detailsItemtoDelete = _unitOfWork.DetailsRepo.Get(u => u.ID == id);
             if (id == 0)
             {
                 return Json(new { success = false, Message = "Error while Deleting" });
             }
-            _detialsRepo.Remove(detailsItemtoDelete);
-            _detialsRepo.Save();
+            _unitOfWork.DetailsRepo.Remove(detailsItemtoDelete);
+            _unitOfWork.Save();
             return Json(new { success = true, Message = "Deleted successfuly" });
             #endregion
         }

@@ -1,0 +1,28 @@
+﻿@model List<subcategoiesMilk>
+<partial name="_notificationView" />
+
+<div class="container mx-auto rounded-lg bg-white p-6 shadow-md">
+    <div class="mb-4 flex items-center justify-between">
+        <h1 class="text-3xl font-extrabold tracking-wide text-gray-800">Dairy List</h1>
+        <a asp-action="Upsert" asp-controller="subcategoiesMilk" class="inline-block transform rounded-md bg-gradient-to-r from-blue-500 to-blue-700 px-6 py-2 font-medium text-white shadow-md transition duration-300 hover:from-blue-600 hover:to-blue-800 hover:scale-105"> Add Dairy Item </a>
+    </div>
+
+    <table id="myTable" class="w-full table-auto border-collapse border border-gray-300">
+        <thead>
+            <tr class="bg-gray-200 text-left">
+                <th class="border border-gray-300 px-4 py-2">MilkId </th>
+                <th class="border border-gray-300 px-4 py-2">MilkType</th>
+                <th class="border border-gray-300 px-4 py-2">MilkName</th>
+                <th class="border border-gray-300 px-4 py-2">FatContent </th>
+                <th class="border border-gray-300 px-4 py-2">ProteinContent </th>
+                <th class="border border-gray-300 px-4 py-2">IsOrganic </th>
+                <th class="border border-gray-300 px-4 py-2">PackagingType </th>
+                <th class="border border-gray-300 px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/submilkcategory.js"> </script>
+}

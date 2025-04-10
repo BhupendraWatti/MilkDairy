@@ -11,14 +11,14 @@ namespace MilkDairy.Areas.Admin.Controllers
     [Authorize(Roles = SD.Role_Admin)]
     public class CompanyController : Controller
     {
-        private readonly ICompanyRepository _companyRepository;
-        public CompanyController(ICompanyRepository comapyRepo)
+        private readonly IUnitOfWork _unitOfWork;
+        public CompanyController(IUnitOfWork unitOfWork)
         {
-            _companyRepository = comapyRepo;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Company> companies = _companyRepository.GetAll().ToList();
+            List<Company> companies = _unitOfWork.CompanyRepo.GetAll().ToList();
             return View(companies);
         }
         public IActionResult Upsert(int? id)
@@ -26,7 +26,7 @@ namespace MilkDairy.Areas.Admin.Controllers
             Company company = new Company();
             if (id != null && id > 0)
             {
-                company = _companyRepository.Get(u => u.Id == id);
+                company = _unitOfWork.CompanyRepo.Get(u => u.Id == id);
                 if (id == null)
                 {
                     return NotFound();
@@ -41,15 +41,15 @@ namespace MilkDairy.Areas.Admin.Controllers
             {
                 if (obj == null)
                 {
-                    _companyRepository.Add(obj);
+                    _unitOfWork.CompanyRepo.Add(obj);
                     TempData["Success"] = "Success fully added";
                 }
                 else
                 {
-                    _companyRepository.Update(obj);
+                    _unitOfWork.CompanyRepo.Update(obj);
                     TempData["Success"] = "Success fully Update the details";
                 }
-                _companyRepository.Save();
+                _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -60,7 +60,7 @@ namespace MilkDairy.Areas.Admin.Controllers
 
     [HttpGet]
         public IActionResult GetAll() {
-            var ListofCompany = _companyRepository.GetAll().Select(p => new
+            var ListofCompany = _unitOfWork.CompanyRepo.GetAll().Select(p => new
             {
                 p.Id,
                 p.Name,
@@ -75,13 +75,13 @@ namespace MilkDairy.Areas.Admin.Controllers
         }
         [HttpDelete]
         public IActionResult Delete(int id) {
-            var deleteCompany = _companyRepository.Get(u => u.Id == id);
+            var deleteCompany = _unitOfWork.CompanyRepo.Get(u => u.Id == id);
             if(id == 0)
             {
                 return Json(new { success=false, Message= "Error while deleting" });
             }
-            _companyRepository.Remove(deleteCompany);
-            _companyRepository.Save();
+            _unitOfWork.CompanyRepo.Remove(deleteCompany);
+            _unitOfWork.Save();
             return Json(new { success = true, Message = "Successfully deleted the item" });
         }
 

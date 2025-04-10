@@ -16,18 +16,18 @@ namespace MilkDairy.Model.Models
         public int Id { get; set; }
         [Required]
         [MaxLength(40)]
-        public string? Name { get; set; }
+        public string Name { get; set; }
         [Required]
         [MaxLength(1800)]
-        public string? Description { get; set; }
+        public string Description { get; set; }
         [Required]
         [MaxLength (1200)]
-        public string? Brand { get; set; }
+        public string Brand { get; set; }
         [Required]
-        public string? WeightVolume { get; set; }
+        public string WeightVolume { get; set; }
         [Required]
         [MaxLength(2000)]
-        public string? Ingredients { get; set; }
+        public string Ingredients { get; set; }
         [Required]
         public float UnitPrice { get; set; }
         [Required]
@@ -36,7 +36,7 @@ namespace MilkDairy.Model.Models
         public bool IsAvailable { get; set; }
         [ValidateNever]
         [Required]
-        public string? ImgURL { get; set; }
+        public string ImgURL { get; set; }
         
     }
 }

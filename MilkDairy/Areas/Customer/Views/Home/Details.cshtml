@@ -1,58 +1,67 @@
-﻿@model Product
-<div class="z-0 min-h-screen bg-gray-100 px-4 py-10">
-    <div class="mx-auto max-w-5xl overflow-hidden rounded-lg bg-white shadow-lg">
-        <!-- Product Top Section -->
-        <div class="grid-cols-1 grid gap-6 lg:grid-cols-2">
-            <!-- Product Image -->
-            <div class="flex items-center justify-center bg-gray-50 p-6">
-                <img src="@Model.ImgURL" alt="Product Image" class="max-h-[300px] rounded-lg shadow">
-            </div>
+﻿@model ShoppingCart 
+<form method="post"> 
+<input hidden asp-for="ProductID" /> 
+ <div class="z-0 min-h-screen px-4 py-10"> 
+     <div class="mx-auto max-w-5xl overflow-hidden rounded-lg shadow-lg"> 
+         <!-- Product Top Section --> 
+         <div class="grid grid-cols-1 lg:grid-cols-2"> 
+             <!-- Product Image --> 
+             <div class="flex items-center justify-center p-6"> 
+                 <img src="@Model.Product.ImgURL" alt="Product Image" class="text max-h-full max-w-full rounded-lg"> 
+             </div> 
+             <!-- Product Details --> 
+             <div class="p-6"> 
+                 <h1 class="mb-4 text-center text-3xl font-bold underline">@Model.Product.Name</h1> 
+                 <p class="mb-4 text-lg text-black"><span class="text-xl font-bold">Brand : </span>@Model.Product.Brand</p> 
+                 <p class="mb-4 text-lg text-black"><span class="text-xl font-bold">Description:</span> @Model.Product.Description</p>
+                 <p class="mb-4 text-lg text-black"> 
+                         <span class="-xl font-bold bg-blend-lighten">Ingredients:</span> @Html.Raw(Model.Product.Ingredients.Replace("<p>", "").Replace("</p>", "")) 
+</p> 
 
-            <!-- Product Details -->
-            <div class="p-6">
-                <h1 class="mb-4 text-3xl font-bold text-gray-800">@Model.Name</h1>
-                <p class="mb-2 text-gray-600"><span class="font-semibold">Brand : </span>@Model.Brand</p>
-                <p class="mb-2 text-gray-600"><span class="font-semibold">Ingredients:</span>@Model.Ingredients</p>
-                <p class="mb-4 text-gray-600"><span class="font-semibold">Description:</span>@Model.Description</p>
+<!-- Product Price --> 
+           <p class="mb-4 text-2xl font-semibold text-green-600">@Model.Product.UnitPrice.ToString("c")</p> 
 
-                <!-- Product Price -->
-                <p class="mb-4 text-2xl font-semibold text-green-600">@Model.UnitPrice.ToString("c")</p>
+<!-- Availability and Stock --> 
+<div class="items-center"> 
+                    <p class="mb-4 text-lg text-black"><span class="font-bold">Weight/Volume:</span> @Model.Product.WeightVolume</p> 
+<p class="mb-4 text-lg text-black"><span class="font-bold">Units in Stock:</span> @Model.Product.UnitsInStock</p> 
+</div> 
 
-                <!-- Availability and Stock -->
-                <div class="flex items-center space-x-4">
-                    <p class="text-gray-600"><span class="font-semibold">Weight/Volume:</span> @Model.WeightVolume</p>
-                    <p class="text-gray-600"><span class="font-semibold">Units in Stock:</span> @Model.UnitsInStock</p>
-                </div>
+                 <div class="mt-4"> 
+                     @if (Model.Product.IsAvailable) 
+                     { 
+                         <span class="inline-block rounded-full py-2 text-xl font-bold text-green-600"> 
+                             In Stock 
+                         </span> 
+                     } 
+                     else 
+                     { 
+                         <span class="inline-block rounded-full py-2 text-xl font-bold text-red-600"> 
+                             Not in Stock 
+                         </span> 
+                     } 
+                 </div> 
+                 <div class="mt-[5px]"> 
+                     <span class="font-mono">Count </span> : <input type="number" asp-for="@Model.Count" class="w-[70px] rounded-xl border-[2px] border-black p-[5px]" /> 
+</div> 
+<!-- Add to Cart Button --> 
+<div class="mt-4 flex justify-between"> 
+
+
+<button  class="m-[5px] w-[17rem] rounded-lg border-[3px] border-transparent py-3 text-lg font-semibold text-black transition hover:border-purple-600">  Add to Cart  </button> 
+                  <a asp-action="Index" class="m-[5px] w-[17rem] rounded-lg border-[3px] border-transparent py-3 text-center text-lg font-semibold text-black hover:border-purple-600"> 
+                          Back to List 
+                      </a> 
                
-                    <div class="mt-4">
-                        @if (Model.IsAvailable)
-                        {
-                            <span class="inline-block rounded-full bg-green-500 px-4 py-2 text-sm font-semibold text-white">
-                                In Stock
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="inline-block rounded-full bg-red-500 px-4 py-2 text-sm font-semibold text-white">
-                                Not in Stock
-                            </span>
-                        }
-                    </div>
-                
+               </div> 
+           </div> 
+       </div> 
 
-                <!-- Add to Cart Button -->
-                <div class="mt-6">
-                    <button class="w-full rounded-lg bg-blue-500 py-3 text-lg font-semibold text-white transition hover:bg-blue-600">
-                        Add to Cart
-                    </button>
-                    <div class="mt-6">
-                        <a asp-action="Index" class="block w-full rounded-lg bg-blue-600 px-4 py-2 text-center font-semibold text-white transition duration-200 hover:bg-blue-500">
-                            Back to List
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+     </div> 
+ </div> 
 
-    </div>
-</div>
+ <div> 
+     <h1>New Item's'</h1> 
+ </div> 
+ </form>
+ 

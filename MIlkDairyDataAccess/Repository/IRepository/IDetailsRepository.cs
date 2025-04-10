@@ -11,6 +11,6 @@ namespace MIlkDairy.DataAccess.Repository.IRepository
     public interface IDetailsRepository : IRepository<Details>
     {
         void Updatea(Details obj);
-        void Save();
+        
     }
 }

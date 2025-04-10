@@ -1,13 +1,13 @@
 ﻿@model List<Company>
 <partial name="_notificationView" />
 
-<div class="container mx-auto rounded-lg bg-gray-50 p-8 shadow-lg">
+<div class="container mx-auto rounded-lg bg-white p-6 shadow-md">
     <!-- Header Section -->
-    <div class="mb-6 flex items-center justify-between">
-        <h1 class="text-3xl font-extrabold tracking-wide text-gray-800">Product List</h1>
+    <div class="mb-4 flex items-center justify-between">
+        <h1 class="text-3xl font-extrabold tracking-wide text-gray-800">Company List</h1>
         <a asp-action="Upsert" asp-controller="Company"
            class="inline-block transform rounded-md bg-gradient-to-r from-blue-500 to-blue-700 px-6 py-2 font-medium text-white shadow-md transition duration-300 hover:from-blue-600 hover:to-blue-800 hover:scale-105">
-            Add New Item
+            Add New Company
         </a>
     </div>
 

@@ -1,0 +1,78 @@
+﻿@model ShoppingCartTotal
+
+<form method="post" class="mx-auto max-w-4xl px-4 py-8">
+    <div class="overflow-hidden rounded-lg bg-white shadow-lg">
+        <!-- Header -->
+        <div class="flex items-center justify-between bg-gray-800 px-6 py-4 text-white">
+            <h5 class="text-lg font-semibold">Shopping Cart</h5>
+            <a asp-action="Index" class="cursor-pointer text-sm text-red-400 hover:text-red-300">Back to Cart</a>
+        </div>
+
+        <div class="p-6">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <!-- Shipping Details -->
+                <div>
+                    <h4 class="mb-4 text-lg font-semibold text-gray-700">Shipping Details:</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Name</label>
+                            <input asp-for="OrderHeader.Name" type="text" class="w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                            <span asp-validation-for="OrderHeader.Name" class="font-semibold text-red-800"></span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Phone</label>
+                            <input asp-for="OrderHeader.PhoneNumber" type="text" class="w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                            <span asp-validation-for="OrderHeader.PhoneNumber" class="font-semibold text-red-800"></span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Street Address</label>
+                            <input asp-for="OrderHeader.StreetAddress" type="text" class="w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                            <span asp-validation-for="OrderHeader.StreetAddress" class="font-semibold text-red-800"></span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">City</label>
+                            <input asp-for="OrderHeader.City" type="text" class="w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                            <span asp-validation-for="OrderHeader.City" class="font-semibold text-red-800"></span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">State</label>
+                            <input asp-for="OrderHeader.State" type="text" class="w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                            <span asp-validation-for="OrderHeader.State" class="font-semibold text-red-800"></span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600">Postal Code</label>
+                            <input asp-for="OrderHeader.PostalCode" type="text" class="w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                            <span asp-validation-for="OrderHeader.PostalCode" class="font-semibold text-red-800"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div>
+                    <h4 class="mb-4 text-lg font-semibold text-gray-700">Order Summary:</h4>
+                    <div class="rounded-lg bg-gray-100 p-4">
+                        @foreach(var details in Model.shoppingCartList){
+                        <div class="mb-2 flex justify-between border-b pb-2">
+                            <div>
+                                <h6 class="font-semibold">@details.Product.Name</h6>
+                                <span class="text-sm text-gray-600">@details.Count</span>
+                            </div>
+                            <span class="font-semibold text-gray-700">@((details.price * details.Count).ToString("c"))</span>
+                        </div>
+                        }
+                        <div class="flex justify-between py-2 font-semibold text-blue-600">
+                            <span>Total</span>
+                            <strong>@Model.OrderHeader.OrderTotal.ToString("c")</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between bg-gray-100 px-6 py-4">
+            <p class="text-sm font-semibold text-black">Estimate Arrival Date: <span class="font-extrabold text-green-800">@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()</span> </p>
+            <button type="submit" class="rounded-md bg-blue-600 px-5 py-2 text-white hover:bg-blue-500">Place Order</button>
+        </div>
+    </div>
+</form>

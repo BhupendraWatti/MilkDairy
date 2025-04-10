@@ -1,0 +1,32 @@
+﻿<partial name="_notificationView" />
+
+<div class="container mx-auto rounded-lg bg-white p-6 shadow-md">
+
+    <div class="container mx-auto max-h-lvh max-w-full px-4 py-6">
+        
+
+        <!-- Table Section with DataTable -->
+        <div class="m-auto w-fit overflow-x-auto rounded-lg bg-white p-3 shadow-md">
+
+            <table id="mytable" class="mt-5 w-full border-collapse border">
+                <thead class="w-fit rounded-r bg-blue-300">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Name</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Email</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Phone Number</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Company</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically loaded here by DataTable -->
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    @section Scripts {
+        <script src="~/js/user.js"></script>
+    }
+</div>

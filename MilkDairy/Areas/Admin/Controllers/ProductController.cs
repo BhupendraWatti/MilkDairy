@@ -10,16 +10,16 @@ namespace MilkDairy.Areas.Admin.Controllers
     [Area("Admin")]
     public class ProductController : Controller
     {
-        private IProductRepository _productrepo;
+        private readonly IUnitOfWork _unitOfWork;
         private IWebHostEnvironment _webHostEnvironment;
-        public ProductController(IProductRepository db, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
-            _productrepo = db;
+            _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            List<Product> objlist = _productrepo.GetAll().ToList();
+            List<Product> objlist = _unitOfWork.ProductRepo.GetAll().ToList();
             return View(objlist);
         }
 
@@ -28,7 +28,7 @@ namespace MilkDairy.Areas.Admin.Controllers
             Product product = new Product();
             if (id != null && id > 0)
             {
-                product = _productrepo.Get(u => u.Id == id);
+                product = _unitOfWork.ProductRepo.Get(u => u.Id == id);
                 if (product == null)
                 {
                     return NotFound();
@@ -80,7 +80,7 @@ namespace MilkDairy.Areas.Admin.Controllers
                     // If no image file is uploaded, retrieve the existing product and keep the ImgURL unchanged
                     if (obj.Id != 0)
                     {
-                        var existingProduct = _productrepo.Get(p => p.Id == obj.Id);  // Retrieve the existing product by ID
+                        var existingProduct = _unitOfWork.ProductRepo.Get(p => p.Id == obj.Id);  // Retrieve the existing product by ID
                         if (existingProduct != null)
                         {
                             obj.ImgURL = existingProduct.ImgURL;  // Retain the existing image URL if no new image is uploaded
@@ -90,15 +90,15 @@ namespace MilkDairy.Areas.Admin.Controllers
 
                 if (obj.Id == 0)
                 {
-                    _productrepo.Add(obj);
+                    _unitOfWork.ProductRepo.Add(obj);
                     TempData["Success"] = "Your new product has been added";
                 }
                 else
                 {
-                    _productrepo.Updatea(obj);
+                    _unitOfWork.ProductRepo.Updatea(obj);
                     TempData["Success"] = "Your product has been updated";
                 }
-                _productrepo.Save();
+                _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -107,7 +107,7 @@ namespace MilkDairy.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var objlist = _productrepo.GetAll().Select(p => new
+            var objlist = _unitOfWork.ProductRepo.GetAll().Select(p => new
             {
                 p.Id,
                 p.Name,
@@ -125,7 +125,7 @@ namespace MilkDairy.Areas.Admin.Controllers
         [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            var productToDeleted = _productrepo.Get(u => u.Id == id);
+            var productToDeleted = _unitOfWork.ProductRepo.Get(u => u.Id == id);
             if (productToDeleted == null)
             {
                 return Json(new { success = false, Message = "Error while Deleteing" });
@@ -136,8 +136,8 @@ namespace MilkDairy.Areas.Admin.Controllers
             {
                 System.IO.File.Delete(oldImagePath);
             }
-            _productrepo.Remove(productToDeleted);
-            _productrepo.Save();
+            _unitOfWork.ProductRepo.Remove(productToDeleted);
+            _unitOfWork.Save();
 
             return Json(new { success = true, Message = "Delete Successful" });
         }

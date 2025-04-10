@@ -5,7 +5,7 @@
         <h1 class="mb-6 text-center text-3xl font-bold text-gray-800">@((Model.ID != 0) ? "Update Item" : "Add New Item")</h1>
 
         <!-- Form Start -->
-        <form method="post" class="space-y-6">
+        <form method="post" class="d-grid grid-cols-2 space-y-6">
             <input asp-for="@(Model.ID)" hidden />
 
             <!-- Item Name -->

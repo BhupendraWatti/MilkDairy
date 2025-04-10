@@ -2,7 +2,7 @@
   "name": "milkdairy",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "css:build": "npx tailwindcss -i ./wwwroot/css/site.css -o ./wwwroot/css/styles.css --minify"
   },
@@ -10,10 +10,25 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "react-scripts": "^5.0.1",
     "tailwindcss": "^3.4.17"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49"
+    "postcss": "^8.4.49",
+    "react-dom": "^19.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

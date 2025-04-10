@@ -15,18 +15,18 @@ namespace MilkDairy.Model
     {
         [Required]
         public string? Name { get; set; }
-        [Required]
+   
         public string? Address { get; set; }
-        [Required]
+       
         public string? City { get; set; }
-        [Required]
+       
         public string? State { get; set; }
-        [Required]
+       
         public string? Pincode { get; set; }
         public int? CompanyID { get; set; }
-        [ForeignKey(nameof(CompanyID))]
+        [ForeignKey("CompanyID")]
         [ValidateNever]
-        public Company  Company{ get; set; }
+        public Company?  Company{ get; set; }
     }
 
 }

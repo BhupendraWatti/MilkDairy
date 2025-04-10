@@ -1,0 +1,85 @@
+﻿<partial name="_notificationView" />
+@{
+    var status = Context.Request.Query["status"];
+    var process = "text-black";
+    var pending = "text-black";
+    var completed = "text-black";
+    var approved = "text-black";
+    var all = "text-black";
+    switch(status){
+
+        case "process":
+            process = "bg-blue-300";
+            break;
+
+        case "pending":
+            pending = "bg-blue-300";
+            break;
+        
+        case "completed":
+            completed = "bg-blue-300";
+            break;
+        case "approved":
+            approved = "bg-blue-300";
+            break;
+        default:
+            all = "bg-blue-300";
+            break;
+
+    }
+
+}
+<div class="container mx-auto rounded-lg bg-white p-6 shadow-md">
+
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header Section -->
+        <div class="mb-4 flex items-center justify-between">
+            <h1 class="text-3xl font-extrabold tracking-wide text-gray-800">Order List</h1>
+           
+        </div>
+
+        <!-- Table Section with DataTable -->
+        <div class="m-auto w-fit overflow-x-auto rounded-lg bg-white p-3 shadow-md">
+            <div class="relative left-7 mb-4 w-[29rem] text-center">
+                <ul class="flex list-none items-center justify-between">
+                    <a asp-controller="Order" asp-action="Index" asp-route-status="process" class="rounded-lg border-2 border-black p-2 @process">
+                        <li>In Process</li>
+                        </a>
+                    <a asp-controller="Order" asp-action="Index" asp-route-status="pending" class="rounded-lg border-2 border-black p-2 @pending">
+                        <li>Payment Pending</li>
+                        </a>
+                    <a asp-controller="Order" asp-action="Index" asp-route-status="completed" class="rounded-lg border-2 border-black p-2 @completed">
+                        <li>Completed</li> </a>
+
+                    <a asp-controller="Order" asp-action="Index" asp-route-status="approved" class="rounded-lg border-2 border-black p-2 @approved">
+                        <li>Approved</li>
+                        </a>
+                    <a asp-controller="Order" asp-action="Index" asp-route-status="all" class="rounded-lg border-2 border-black p-2 @all">
+                        <li>All</li>
+                        </a>
+                </ul>
+            </div>
+            <table id="myTable" class="mt-5 w-full border-collapse border">
+                <thead class="w-fit rounded-r bg-blue-300">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-sm font-medium">ID</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Name</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Phone Number</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Email</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Order Status</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Order Total</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically loaded here by DataTable -->
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    @section Scripts {
+        <script src="~/js/order.js"></script>
+    }
+</div>
