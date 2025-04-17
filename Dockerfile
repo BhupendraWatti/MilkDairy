@@ -21,11 +21,14 @@ COPY . .
 # Set the working directory to the MilkDairy project folder
 WORKDIR "/src/MilkDairy"
 
-# Build the project
-RUN dotnet build "MilkDairy.csproj" -c Release -o /app/build
+# Install npm dependencies before running css:build
+RUN npm install
 
 # Run the npm command to build CSS
 RUN npm run css:build
+
+# Build the project
+RUN dotnet build "MilkDairy.csproj" -c Release -o /app/build
 
 # Publish the project to the /app/publish folder
 RUN dotnet publish "MilkDairy.csproj" -c Release -o /app/publish
