@@ -1,47 +1,48 @@
-# Use the official .NET SDK image to build the project
+# Use the official .NET SDK image for building the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+# Set the working directory for the build stage
 WORKDIR /src
 
-# Install Node.js and npm to handle CSS build
-RUN apt-get update && apt-get install -y \
-    curl \
-    gnupg \
-    ca-certificates \
-    lsb-release \
-    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+# Copy the .csproj files for all the projects into the container (adjust the paths as per your actual structure)
+COPY ./MilkDairy.csproj ./MilkDairy.csproj
+COPY ./MilkDairy.Model/MilkDairy.Model.csproj ./MilkDairy.Model/MilkDairy.Model.csproj
+COPY ./MilkDairy.Utility/MilkDairy.Utility.csproj ./MilkDairy.Utility/MilkDairy.Utility.csproj
+COPY ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj
 
-# Copy the project file and restore dependencies
-COPY ["MilkDairy/MilkDairy.csproj", "MilkDairy/"]
-RUN dotnet restore "MilkDairy/MilkDairy.csproj"
+# Copy the entire source code into the container
+COPY ./ /src/
 
-# Copy the rest of the application files
-COPY . .
+# Restore NuGet packages for the entire solution (including project references)
+RUN dotnet restore "MilkDairy.csproj"
 
-# Set the working directory to the MilkDairy project folder
-WORKDIR "/src/MilkDairy"
+# Install Node.js and npm to run the npm command for building CSS (for Tailwind CSS)
+RUN apt-get update && apt-get install -y nodejs npm
 
-# Install npm dependencies before running css:build
+# Install project dependencies using npm
+WORKDIR /src
 RUN npm install
 
-# Run the npm command to build CSS
+# Run the npm command to build CSS (for Tailwind)
 RUN npm run css:build
 
-# Build the project
+# Build the MilkDairy project
 RUN dotnet build "MilkDairy.csproj" -c Release -o /app/build
 
-# Publish the project to the /app/publish folder
+# Publish the application for production
 RUN dotnet publish "MilkDairy.csproj" -c Release -o /app/publish
 
-# Final Stage - Runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+# Use the official .NET runtime image as the base image for the runtime environment
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
+# Set the working directory for the runtime stage
 WORKDIR /app
 
-# Copy the published files from the build image
+# Copy the published output from the build stage
 COPY --from=build /app/publish .
 
-# Expose port 80
+# Expose the port that the app will run on (adjust as needed)
 EXPOSE 80
 
-# Set the entry point to run the application
+# Set the entry point for the application
 ENTRYPOINT ["dotnet", "MilkDairy.dll"]
