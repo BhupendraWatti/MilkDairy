@@ -1,32 +1,29 @@
 ﻿<partial name="_notificationView" />
 
-<div class="container mx-auto rounded-lg bg-white p-6 shadow-md">
-
-    <div class="container mx-auto max-h-lvh max-w-full px-4 py-6">
-        
+<div class="container mx-auto px-4 py-6 rounded-lg bg-white shadow-md">
+    <div class="flex flex-col items-center">
+        <h1 class="text-2xl font-bold mb-4 text-gray-800">User Management</h1>
 
         <!-- Table Section with DataTable -->
-        <div class="m-auto w-fit overflow-x-auto rounded-lg bg-white p-3 shadow-md">
-
-            <table id="mytable" class="mt-5 w-full border-collapse border">
-                <thead class="w-fit rounded-r bg-blue-300">
-                    <tr>
-                        <th class="px-4 py-2 text-left text-sm font-medium">Name</th>
-                        <th class="px-4 py-2 text-left text-sm font-medium">Email</th>
-                        <th class="px-4 py-2 text-left text-sm font-medium">Phone Number</th>
-                        <th class="px-4 py-2 text-left text-sm font-medium">Company</th>
-                        <th class="px-4 py-2 text-left text-sm font-medium">Role</th>
+        <div class="w-full overflow-x-auto rounded-lg bg-white p-3 shadow-lg border border-gray-200">
+            <table id="mytable" class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                        <th class="px-6 py-3 text-left text-sm font-semibold uppercase">Name</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold uppercase">Email</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold uppercase">Phone Number</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold uppercase">Company</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold uppercase">Role</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-200">
                     <!-- Data will be dynamically loaded here by DataTable -->
                 </tbody>
             </table>
-
         </div>
     </div>
-
-    @section Scripts {
-        <script src="~/js/user.js"></script>
-    }
 </div>
+
+@section Scripts {
+    <script src="~/js/user.js"></script>
+}

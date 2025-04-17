@@ -31,7 +31,7 @@ function loadDataTable(status) {
         "ajax": { url: '/Admin/order/GetAll?status='+ status },
         "columns": [
             { data: 'id', "width": "5%" },  // Small width for name
-            { data: 'name', "width": "15%" },  // More space for description
+            { data: 'name', "width": "25%" },  // More space for description
             { data: 'phoneNumber', "width": "15%" },  // Moderate width for brand
             { data: 'applicationUser.email', "width": "15%" },  // Moderate width for weight/volume
             { data: 'orderStatus', "width": "20%" },  // More space for ingredients

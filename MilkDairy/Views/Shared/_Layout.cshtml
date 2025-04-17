@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MilkDairy</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MilkDairy.styles.css" asp-append-version="true" />
@@ -16,68 +16,227 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
 
-   
 </head>
-<body class="text-gray-900">
-    <header class="">
-        <nav class="flex justify-between bg-gradient-to-r from-purple-600 via-purple-400 to-violet-500 p-[20px]">
-            @* <div class="text-3xl font-extrabold"> MilkDairy </div> *@
-            <div class="container mx-auto flex items-center justify-between px-4 py-2">
-                <ul class="hidden flex-row md:flex">
-                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="text-l rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Home</a>
-                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="text-l rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Order Management</a>
-                    @if(User.IsInRole(SD.Role_Admin)){
-                    <li class="group relative text-white">
-                            <span class="rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full">Operations</span>
-                        <div class="text-l absolute z-10 hidden w-40 rounded-md bg-white py-2 font-medium shadow-md group-hover:block">
-                            <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Details </a>
-                            <a asp-area="Admin"  asp-controller="Product" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Product</a>
-                            <a asp-area="Admin"  asp-controller="Company" asp-action="Index" class="block px-4 text-black hover:bg-gray-100"> Company</a>
-                        </div>
-                    </li>
-                    <li class="group relative text-white">
-                        <span class="rounded-md p-[15px] font-semibold"> Household items</span>
-                            <div class="text-l absolute z-10 hidden w-40 rounded-md bg-white py-2 font-medium shadow-md group-hover:block">
-                                <a asp-area="Admin" asp-controller="subcategoiesMilk" asp-action="Index" class="block px-4 text-black hover:bg-gray-100">Milk</a>
-                        </div>
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+    <header class="sticky top-0 z-50 shadow-md">
+        <nav class="bg-gradient-to-r from-purple-600 via-purple-500 to-violet-500">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex items-center justify-between">
+                    <!-- Logo or Brand -->
+                    <div class="flex items-center">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="text-xl font-bold text-white">MilkDairy</a>
+                    </div>
 
-                    </li>
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-button" class="text-white hover:text-gray-200 focus:outline-none">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
 
-                        <li class="group relative text-white">
-                            <span class="rounded-md p-[15px] font-semibold">About User</span>
-                            <div class="text-l absolute z-10 hidden w-40 rounded-md bg-white py-2 font-medium shadow-md group-hover:block">
-                                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="block px-4 text-black hover:bg-gray-100">Company User</a>
+                    <!-- Desktop Navigation -->
+                    <div class="hidden md:flex items-center space-x-4">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150">Home</a>
+                        <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150">Order Management</a>
+
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <!-- Operations Dropdown -->
+                            <div class="relative group">
+                                <button class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150 flex items-center">
+                                    Operations
+                                    <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0  group-hover:opacity-100 group-hover:visible transition duration-150 z-50">
+                                    <div class="py-1">
+                                        <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Details</a>
+                                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Product</a>
+                                        <a asp-area="Admin" asp-controller="Company" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Company</a>
+                                    </div>
+                                </div>
                             </div>
 
-                        </li>
-                    }
-                    
-                    <li>
+                            <!-- Household Items Dropdown -->
+                            <div class="relative group">
+                                <button class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150 flex items-center">
+                                    Household Items
+                                    <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0  group-hover:opacity-100 group-hover:visible transition duration-150 z-50">
+                                    <div class="py-1">
+                                        <a asp-area="Admin" asp-controller="subcategoiesMilk" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Milk</a>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <a asp-area="Customer" asp-controller="cart" asp-action="Index" class="text-l rounded-md px-3 font-medium text-white hover:text-gray-300 hover:rounded-full"> @await Component.InvokeAsync("ShoppingCart") </a>
-                    </li>
-                    
-                    
-                </ul>
-                <partial name="_LoginPartial" />
+                            <!-- About User Dropdown -->
+                            <div class="relative group">
+                                <button class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150 flex items-center">
+                                    About User
+                                    <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0  group-hover:opacity-100 group-hover:visible transition duration-150 z-50">
+                                    <div class="py-1">
+                                        <a asp-area="Admin" asp-controller="User" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Company User</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <a asp-area="Customer" asp-controller="cart" asp-action="Index" class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150">
+                            @await Component.InvokeAsync("ShoppingCart")
+                        </a>
+                    </div>
+
+                    <!-- User Login/Register -->
+                    <div class="hidden md:block">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation (hidden by default) -->
+            <div id="mobile-menu" class="hidden md:hidden bg-purple-800">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="block px-3 py-2 text-white hover:bg-purple-700 rounded-md">Home</a>
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="block px-3 py-2 text-white hover:bg-purple-700 rounded-md">Order Management</a>
+
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        <!-- Mobile Operations Dropdown -->
+                        <div class="relative">
+                            <button id="operations-dropdown-btn" class="w-full flex justify-between items-center px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                                <span>Operations</span>
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="operations-mobile-menu" class="hidden px-4 py-2 bg-purple-900 rounded-md mt-1">
+                                <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Details</a>
+                                <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Product</a>
+                                <a asp-area="Admin" asp-controller="Company" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Company</a>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Household Items Dropdown -->
+                        <div class="relative">
+                            <button id="household-dropdown-btn" class="w-full flex justify-between items-center px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                                <span>Household Items</span>
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="household-mobile-menu" class="hidden px-4 py-2 bg-purple-900 rounded-md mt-1">
+                                <a asp-area="Admin" asp-controller="subcategoiesMilk" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Milk</a>
+                            </div>
+                        </div>
+
+                        <!-- Mobile About User Dropdown -->
+                        <div class="relative">
+                            <button id="aboutuser-dropdown-btn" class="w-full flex justify-between items-center px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                                <span>About User</span>
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="aboutuser-mobile-menu" class="hidden px-4 py-2 bg-purple-900 rounded-md mt-1">
+                                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Company User</a>
+                            </div>
+                        </div>
+                    }
+
+                    <a asp-area="Customer" asp-controller="cart" asp-action="Index" class="block px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                        @await Component.InvokeAsync("ShoppingCart")
+                    </a>
+
+                    <!-- Mobile Login/Register -->
+                    <div class="pt-2 border-t border-purple-700">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <main role="main" class="pb-12">
-            @RenderBody()
-        </main>
-    </div>
+
+    <main role="main" class="container mx-auto px-4 py-6 flex-grow">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-purple-800 text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-lg font-semibold mb-2">MilkDairy</h3>
+                    <p class="text-sm">Fresh dairy products delivered to your doorstep</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold mb-2">Connect with us</h4>
+                    <div class="flex space-x-3">
+                        <a href="#" class="text-white hover:text-gray-300">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-gray-300">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-gray-300">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-sm">
+                <p>&copy; @DateTime.Now.Year - MilkDairy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.tiny.cloud/1/7razhavthb5zytelw92e5coq2g8hrjjjoilmpwo3ejaldwv1/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        // Mobile menu toggle functionality
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Mobile dropdown menus
+        document.addEventListener('DOMContentLoaded', function() {
+            // Operations dropdown
+            if (document.getElementById('operations-dropdown-btn')) {
+                document.getElementById('operations-dropdown-btn').addEventListener('click', function() {
+                    document.getElementById('operations-mobile-menu').classList.toggle('hidden');
+                });
+            }
+
+            // Household items dropdown
+            if (document.getElementById('household-dropdown-btn')) {
+                document.getElementById('household-dropdown-btn').addEventListener('click', function() {
+                    document.getElementById('household-mobile-menu').classList.toggle('hidden');
+                });
+            }
+
+            // About user dropdown
+            if (document.getElementById('aboutuser-dropdown-btn')) {
+                document.getElementById('aboutuser-dropdown-btn').addEventListener('click', function() {
+                    document.getElementById('aboutuser-mobile-menu').classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
