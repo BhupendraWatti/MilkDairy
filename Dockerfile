@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy the .csproj files for all the projects into the container (adjust the paths as per your actual structure)
-COPY ./MilkDairy.csproj ./MilkDairy.csproj
+# COPY ./MilkDairy.csproj ./MilkDairy.csproj
 COPY ./MilkDairy.Model/MilkDairy.Model.csproj ./MilkDairy.Model/MilkDairy.Model.csproj
 COPY ./MilkDairy.Utility/MilkDairy.Utility.csproj ./MilkDairy.Utility/MilkDairy.Utility.csproj
 COPY ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj
