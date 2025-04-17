@@ -2,31 +2,28 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy all .csproj files
-COPY ./MilkDairy/MilkDairy.csproj ./MilkDairy/MilkDairy.csproj
-COPY ./MilkDairy.Model/MilkDairy.Model.csproj ./MilkDairy.Model/MilkDairy.Model.csproj
-COPY ./MilkDairy.Utility/MilkDairy.Utility.csproj ./MilkDairy.Utility/MilkDairy.Utility.csproj
-COPY ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj
-
-# Copy package.json only (remove package-lock.json line)
-COPY ./package.json ./package.json
-
-# Copy the rest of the app
-COPY . .
+# Copy all project files
+COPY ./MilkDairy/MilkDairy.csproj ./MilkDairy/
+COPY ./MilkDairy.Model/MilkDairy.Model.csproj ./MilkDairy.Model/
+COPY ./MilkDairy.Utility/MilkDairy.Utility.csproj ./MilkDairy.Utility/
+COPY ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj ./MIlkDairyDataAccess/
 
 # Restore NuGet packages
 RUN dotnet restore "MilkDairy/MilkDairy.csproj"
 
-# Install Node.js and npm
+# Copy everything
+COPY . .
+
+# Install Node.js + npm
 RUN apt-get update && apt-get install -y nodejs npm
 
-# Install Tailwind dependencies
+# Install frontend dependencies and build Tailwind CSS
+WORKDIR /src/MilkDairy
 RUN npm install
-
-# Build Tailwind CSS
 RUN npm run css:build
 
-# Build and publish .NET project
+# Build and publish .NET app
+WORKDIR /src
 RUN dotnet build "MilkDairy/MilkDairy.csproj" -c Release -o /app/build
 RUN dotnet publish "MilkDairy/MilkDairy.csproj" -c Release -o /app/publish
 
