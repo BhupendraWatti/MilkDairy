@@ -8,11 +8,10 @@ COPY ./MilkDairy.Model/MilkDairy.Model.csproj ./MilkDairy.Model/MilkDairy.Model.
 COPY ./MilkDairy.Utility/MilkDairy.Utility.csproj ./MilkDairy.Utility/MilkDairy.Utility.csproj
 COPY ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj
 
-# Copy package.json and package-lock.json (if you have it)
+# Copy package.json only (remove package-lock.json line)
 COPY ./package.json ./package.json
-COPY ./package-lock.json ./package-lock.json
 
-# Copy the rest of the code
+# Copy the rest of the app
 COPY . .
 
 # Restore NuGet packages
@@ -24,7 +23,7 @@ RUN apt-get update && apt-get install -y nodejs npm
 # Install Tailwind dependencies
 RUN npm install
 
-# Build Tailwind CSS (based on your script)
+# Build Tailwind CSS
 RUN npm run css:build
 
 # Build and publish .NET project
