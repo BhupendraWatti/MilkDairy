@@ -1,22 +1,36 @@
-# Build Stage
+# STAGE 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy all projects
+# Copy all project files
+COPY ./MilkDairy/MilkDairy.csproj ./MilkDairy/
+COPY ./MilkDairy.Model/MilkDairy.Model.csproj ./MilkDairy.Model/
+COPY ./MilkDairy.Utility/MilkDairy.Utility.csproj ./MilkDairy.Utility/
+COPY ./MIlkDairyDataAccess/MIlkDairy.DataAccess.csproj ./MIlkDairyDataAccess/
+
+# Restore NuGet packages
+RUN dotnet restore "MilkDairy/MilkDairy.csproj"
+
+# Copy everything
 COPY . .
 
-# Go to main web project directory and restore
-WORKDIR /src/MilkDairy
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app/publish
+# Install Node.js + npm
+RUN apt-get update && apt-get install -y nodejs npm
 
-# Runtime Stage
+# Install frontend dependencies and build Tailwind CSS
+WORKDIR /src/MilkDairy
+RUN npm install
+RUN npm run css:build
+
+# Build and publish .NET app
+WORKDIR /src
+RUN dotnet build "MilkDairy/MilkDairy.csproj" -c Release -o /app/build
+RUN dotnet publish "MilkDairy/MilkDairy.csproj" -c Release -o /app/publish
+
+# STAGE 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/publish ./
+COPY --from=build /app/publish .
 
-# Tell ASP.NET to use port 80
-ENV ASPNETCORE_URLS=http://+:80
 EXPOSE 80
-
 ENTRYPOINT ["dotnet", "MilkDairy.dll"]
