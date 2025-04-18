@@ -5,117 +5,252 @@
     ViewData["Title"] = "Register";
 }
 
-<div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-    <div id="register-form-container"></div>
-
-    <div class="w-full max-w-md space-y-8">
-        <div>
-            <h1 class="text-center text-3xl font-extrabold text-gray-900">Create a new account</h1>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                Or <a asp-page="./Login" class="font-medium text-blue-600 hover:text-blue-500">sign in to your account</a>
-            </p>
+<div class="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-100">
+    <!-- Top Banner/Header Area -->
+    <div class="w-full bg-gradient-to-r from-indigo-600 to-blue-700 py-4 px-6 shadow-md">
+        <div class="max-w-full mx-auto">
+            <h1 class="text-3xl font-bold text-white text-center">@ViewData["Title"]</h1>
+            <p class="text-center text-blue-100 mt-1">Join our platform to access exclusive features</p>
         </div>
-        <div class="rounded-lg bg-white px-6 py-8 shadow-lg sm:px-10">
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <div asp-validation-summary="ModelOnly" class="mb-4 text-sm text-red-500" role="alert"></div>
+    </div>
 
-                <div class="mb-6">
-                    <label asp-for="Input.Email" class="block text-sm font-medium text-gray-700">Email address</label>
-                    <input asp-for="Input.Email" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="you@example.com" />
-                    <span asp-validation-for="Input.Email" class="mt-1 text-xs text-red-500"></span>
-                </div>
-                <div class="mb-6">
-                    <label asp-for="Input.Name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input asp-for="Input.Name" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Name" />
-                    <span asp-validation-for="Input.Name" class="mt-1 text-xs text-red-500"></span>
-                </div>
-                <div class="mb-6">
-                    <label asp-for="Input.Phonenumber" class="block text-sm font-medium text-gray-700">Phone number</label>
-                    <input asp-for="Input.Phonenumber" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Phone number" />
-                    <span asp-validation-for="Input.Phonenumber" class="mt-1 text-xs text-red-500"></span>
-                </div>
-                <div class="mb-6">
-                    <label asp-for="Input.Password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input asp-for="Input.Password" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Password" />
-                    <span asp-validation-for="Input.Password" class="mt-1 text-xs text-red-500"></span>
-                </div>
-
-                <div class="mb-6">
-                    <label asp-for="Input.ConfirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input asp-for="Input.ConfirmPassword" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Confirm Password" />
-                    <span asp-validation-for="Input.ConfirmPassword" class="mt-1 text-xs text-red-500"></span>
-                </div>
-                <div class="mb-6">
-                    <label asp-for="Input.Address" class="block text-sm font-medium text-gray-700">Home address</label>
-                    <input asp-for="Input.Address" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Address" />
-                    <span asp-validation-for="Input.Address" class="mt-1 text-xs text-red-500"></span>
-                </div>
-                <div class="mb-6">
-                    <label asp-for="Input.State" class="block text-sm font-medium text-gray-700">State</label>
-                    <input asp-for="Input.State"  class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="State" />
-                    <span asp-validation-for="Input.State" class="mt-1 text-xs text-red-500"></span>
-                </div>
-                <div class="mb-6">
-                    <label asp-for="Input.City" class="block text-sm font-medium text-gray-700">City name</label>
-                    <input asp-for="Input.City" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="City Name" />
-                    <span asp-validation-for="Input.City" class="mt-1 text-xs text-red-500"></span>
-                </div>
-                <div class="mb-6">
-                    <label asp-for="Input.Pincode" class="block text-sm font-medium text-gray-700">Pin code</label>
-                    <input asp-for="Input.Pincode" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Pin code" />
-                    <span asp-validation-for="Input.Pincode" class="mt-1 text-xs text-red-500"></span>
-                </div>
-                
-                <div class="mb-6">
-                    
-                    <select asp-for="Input.SelectRole" asp-items="@Model.Input.RoleList" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        <option value="" disabled selected>-- Select a Role --</option>
-                    </select>
-                    
-                </div><div class="mb-6">
-                 
-                    <select asp-for="Input.CompanyID" style="display:none" asp-items="@Model.Input.CompanyList" class="mt-1 block w-full rounded-md border-gray-300 p-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        <option value="" disabled selected>-- Select a Company --</option>
-                    </select>
-                    
-                </div>
-
-                <div>
-                    <button id="registerSubmit" type="submit" class="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Register</button>
-                </div>
-            </form>
-
-            <div class="mt-6">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
+    <div class="w-full px-4 py-8 md:py-12">
+        <div class="max-w-full mx-auto">
+            <!-- Main Content Area -->
+            <div class="flex flex-col lg:flex-row w-full rounded-xl shadow-xl overflow-hidden">
+                <!-- Left side - Form -->
+                <div class="w-full lg:w-3/4 bg-white p-6 md:p-10">
+                    <div class="mb-6 border-b border-gray-200 pb-4">
+                        <h2 class="text-2xl font-bold text-gray-900">Create your account</h2>
+                        <p class="mt-2 text-sm text-gray-600">
+                            Already have an account? <a asp-page="./Login" class="font-medium text-indigo-600 hover:text-indigo-500 transition duration-150">Sign in</a>
+                        </p>
                     </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="bg-white px-2 text-gray-500">Or register with</span>
-                    </div>
-                </div>
 
-                <div class="mt-6 grid grid-cols-1 gap-6">
-                    @if ((Model.ExternalLogins?.Count ?? 0) > 0)
-                    {
-                        @foreach (var provider in Model.ExternalLogins!)
-                        {
-                            <div class="mt-3">
-                                <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                                    <div>
-                                        <button type="submit" class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                                            <span class="sr-only">Sign in with @provider.DisplayName</span>
-                                            @provider.DisplayName
-                                        </button>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-6">
+                        <div asp-validation-summary="ModelOnly" class="p-3 rounded-lg bg-red-50 text-sm text-red-600" role="alert"></div>
+
+                        <!-- Two Column Grid Layout -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Personal Information Section -->
+                            <div class="col-span-1 md:col-span-2 lg:col-span-1">
+                                <div class="bg-gray-50 p-6 rounded-lg h-full">
+                                    <h3 class="text-lg font-medium text-gray-800 mb-4 border-l-4 border-indigo-500 pl-3">Personal Information</h3>
+
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label asp-for="Input.Name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.Name" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="John Doe" />
+                                                <span asp-validation-for="Input.Name" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label asp-for="Input.Email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.Email" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="you@example.com" />
+                                                <span asp-validation-for="Input.Email" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label asp-for="Input.Phonenumber" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.Phonenumber" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="+1 (555) 123-4567" />
+                                                <span asp-validation-for="Input.Phonenumber" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                        }
-                    }
-                    else
-                    {
-                        <p class="text-center text-sm text-gray-500">No external login services configured.</p>
-                    }
+
+                            <!-- Security Section -->
+                            <div class="col-span-1">
+                                <div class="bg-gray-50 p-6 rounded-lg h-full">
+                                    <h3 class="text-lg font-medium text-gray-800 mb-4 border-l-4 border-indigo-500 pl-3">Security</h3>
+
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label asp-for="Input.Password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.Password" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="••••••••" />
+                                                <span asp-validation-for="Input.Password" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label asp-for="Input.ConfirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.ConfirmPassword" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="••••••••" />
+                                                <span asp-validation-for="Input.ConfirmPassword" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Account Type Section -->
+                            <div class="col-span-1">
+                                <div class="bg-gray-50 p-6 rounded-lg h-full">
+                                    <h3 class="text-lg font-medium text-gray-800 mb-4 border-l-4 border-indigo-500 pl-3">Account Type</h3>
+
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="Input_SelectRole" class="block text-sm font-medium text-gray-700 mb-1">Select Role</label>
+                                            <div class="relative">
+                                                <select asp-for="Input.SelectRole" asp-items="@Model.Input.RoleList" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150 appearance-none">
+                                                    <option value="" disabled selected>-- Select a Role --</option>
+                                                </select>
+                                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="companySelectContainer">
+                                            <label for="Input_CompanyID" class="block text-sm font-medium text-gray-700 mb-1">Select Company</label>
+                                            <div class="relative">
+                                                <select asp-for="Input.CompanyID" style="display:none" asp-items="@Model.Input.CompanyList" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150 appearance-none">
+                                                    <option value="" disabled selected>-- Select a Company --</option>
+                                                </select>
+                                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Address Section - Spans Full Width in Layout -->
+                            <div class="col-span-1 md:col-span-2 lg:col-span-3">
+                                <div class="bg-gray-50 p-6 rounded-lg">
+                                    <h3 class="text-lg font-medium text-gray-800 mb-4 border-l-4 border-indigo-500 pl-3">Address Details</h3>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                        <div class="lg:col-span-4">
+                                            <label asp-for="Input.Address" class="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.Address" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="123 Main Street, Apt 4B" />
+                                                <span asp-validation-for="Input.Address" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label asp-for="Input.City" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.City" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="New York" />
+                                                <span asp-validation-for="Input.City" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label asp-for="Input.State" class="block text-sm font-medium text-gray-700 mb-1">State/Province</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.State" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="New York" />
+                                                <span asp-validation-for="Input.State" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label asp-for="Input.Pincode" class="block text-sm font-medium text-gray-700 mb-1">Postal/Zip Code</label>
+                                            <div class="relative">
+                                                <input asp-for="Input.Pincode" class="w-full rounded-lg border-gray-300 py-3 px-4 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-150" placeholder="10001" />
+                                                <span asp-validation-for="Input.Pincode" class="mt-1 text-xs text-red-500 block"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-4">
+                            <button id="registerSubmit" type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-medium py-3 px-4 rounded-lg shadow-md hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform hover:scale-[1.01] transition-all duration-200">
+                                Create Account
+                            </button>
+                        </div>
+
+                        <!-- Social Login Section -->
+                        <div class="relative py-4">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center">
+                                <span class="bg-white px-4 text-sm text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                            {
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="col-span-1">
+                                        <button type="submit" name="provider" value="@provider.Name" class="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 transition duration-150">
+                                            <span class="sr-only">Sign in with @provider.DisplayName</span>
+                                            <span class="text-gray-700">@provider.DisplayName</span>
+                                        </button>
+                                    </form>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-span-2 md:col-span-4 text-center p-3 border border-gray-200 rounded-lg bg-gray-50">
+                                    <p class="text-sm text-gray-500">No external login services configured.</p>
+                                </div>
+                            }
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right side - Image/Content -->
+                <div class="hidden lg:block lg:w-1/4 bg-gradient-to-br from-indigo-600 to-blue-700 p-8 flex-col justify-center text-white">
+                    <div class="sticky top-8">
+                        <div class="mb-8 flex justify-center">
+                            <svg class="w-16 h-16 text-white opacity-75" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-6">Why Join Us?</h2>
+                        <p class="text-blue-100 mb-8">Create your account and get access to our premium features and services.</p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-center p-3 bg-blue-800 bg-opacity-30 rounded-lg">
+                                <svg class="w-5 h-5 mr-3 text-blue-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-sm">Exclusive member benefits</span>
+                            </div>
+                            <div class="flex items-center p-3 bg-blue-800 bg-opacity-30 rounded-lg">
+                                <svg class="w-5 h-5 mr-3 text-blue-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-sm">Personalized dashboard</span>
+                            </div>
+                            <div class="flex items-center p-3 bg-blue-800 bg-opacity-30 rounded-lg">
+                                <svg class="w-5 h-5 mr-3 text-blue-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-sm">Priority customer support</span>
+                            </div>
+                            <div class="flex items-center p-3 bg-blue-800 bg-opacity-30 rounded-lg">
+                                <svg class="w-5 h-5 mr-3 text-blue-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="text-sm">Regular feature updates</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 p-4 bg-white bg-opacity-10 rounded-lg border border-blue-400 border-opacity-30">
+                            <p class="text-sm italic text-center">"Join thousands of satisfied users who have transformed their experience with our platform."</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,18 +261,28 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(document).ready(function(){
+            // Hide company select container initially
+            $('#companySelectContainer').hide();
+
             $('#Input_SelectRole').change(function(){
-                var Select = $('#Input_SelectRole  Option:Selected').text();
+                var Select = $('#Input_SelectRole option:selected').text();
                 if(Select == 'Company'){
                     $('#Input_CompanyID').show();
+                    $('#companySelectContainer').show();
                 }
                 else{
-                     $('#Input_CompanyID').hide();
+                    $('#Input_CompanyID').hide();
+                    $('#companySelectContainer').hide();
                 }
+            });
 
-            })
-        })
-
+            // Add animation effects for form inputs
+            $('.form-control, input, select').focus(function(){
+                $(this).parent().addClass('scale-105').css('transition', 'all 0.2s ease');
+            }).blur(function(){
+                $(this).parent().removeClass('scale-105');
+            });
+        });
     </script>
     <script src="/js/react-register/main.js"></script>
     <link href="/js/react-register/main.css" rel="stylesheet" />

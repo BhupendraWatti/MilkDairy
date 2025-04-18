@@ -4,65 +4,79 @@
     ViewData["Title"] = "Log in";
 }
 
-<h1 class="text-center text-2xl">@ViewData["Title"]</h1>
+<div class="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-100 py-12">
+    <h1 class="text-center text-3xl font-bold text-indigo-800 mb-8 tracking-wide">@ViewData["Title"]</h1>
 
-<div class="flex flex-wrap">
-    <!-- Form Section -->
-    <div class="flex w-full flex-col items-center justify-center px-8">
-        <section class="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-            <form id="account" method="post">
-                <h2 class="mb-4 text-2xl font-bold text-gray-800">Use a local account to log in.</h2>
-                <hr class="mb-4 border-gray-200" />
+    <div class="flex flex-wrap max-w-6xl mx-auto shadow-2xl rounded-2xl overflow-hidden">
+        <!-- Form Section -->
+        <div class="flex w-full md:w-1/2 flex-col items-center justify-center px-8 py-10 bg-white backdrop-blur-sm bg-opacity-95">
+            <section class="w-full max-w-md">
+                <form id="account" method="post" class="space-y-6">
+                    <h2 class="mb-6 text-2xl font-bold text-gray-800 border-l-4 border-indigo-600 pl-3">Welcome Back</h2>
+                    <hr class="mb-6 border-gray-200" />
 
-                <div asp-validation-summary="ModelOnly" class="mb-4 text-red-500" role="alert"></div>
+                    <div asp-validation-summary="ModelOnly" class="mb-4 text-red-500 p-3 bg-red-50 rounded-lg" role="alert"></div>
 
-                <!-- Email Input -->
-                <div class="mb-4">
-                    <input asp-for="Input.Email" class="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-none focus:ring-blue-300 focus:border-blue-300" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="mb-2 block text-gray-600">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-red-500"></span>
-                </div>
+                    <!-- Email Input -->
+                    <div class="mb-5 relative">
+                        <label asp-for="Input.Email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input asp-for="Input.Email" class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                        <span asp-validation-for="Input.Email" class="text-red-500 text-sm mt-1 block"></span>
+                    </div>
 
-                <!-- Password Input -->
-                <div class="mb-4">
-                    <input asp-for="Input.Password" class="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 leading-tight text-gray-700 focus:outline-none focus:ring-blue-300 focus:border-blue-300" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="mb-2 block text-gray-600">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-red-500"></span>
-                </div>
+                    <!-- Password Input -->
+                    <div class="mb-5 relative">
+                        <label asp-for="Input.Password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input asp-for="Input.Password" class="w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200" autocomplete="current-password" aria-required="true" placeholder="••••••••" />
+                        <span asp-validation-for="Input.Password" class="text-red-500 text-sm mt-1 block"></span>
+                    </div>
 
-                <!-- Remember Me -->
-                <div class="mb-4 flex items-center">
-                    <label asp-for="Input.RememberMe" class="mr-2 text-gray-600">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
+                    <!-- Remember Me -->
+                    <div class="flex items-center justify-between mb-2">
+                        <label asp-for="Input.RememberMe" class="flex items-center text-gray-600 text-sm">
+                            <input class="form-check-input h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mr-2" asp-for="Input.RememberMe" />
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                        <a id="forgot-password" asp-page="./ForgotPassword" class="text-sm text-indigo-600 hover:text-indigo-800 hover:underline transition duration-200">
+                            Forgot password?
+                        </a>
+                    </div>
 
-                <!-- Login Button -->
-                <div>
-                    <button id="login-submit" type="submit" class="w-full rounded-md bg-blue-600 px-4 py-2 font-bold text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                        Log in
-                    </button>
-                </div>
+                    <!-- Login Button -->
+                    <div class="mt-8">
+                        <button id="login-submit" type="submit" class="w-full rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 px-6 py-3 font-medium text-white shadow-lg hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transform hover:scale-[1.02] transition-all duration-200">
+                            Sign In
+                        </button>
+                    </div>
 
-                <!-- Additional Links -->
-                <div class="mt-6 text-sm text-gray-600">
-                    <p class="mb-2">
-                        <a id="forgot-password" asp-page="./ForgotPassword" class="text-blue-500 hover:underline">Forgot your password?</a>
-                    </p>
-                    <p class="mb-2">
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-blue-500 hover:underline">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-blue-500 hover:underline">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+                    <!-- Additional Links -->
+                    <div class="mt-8 text-center text-sm text-gray-600">
+                        <p class="mb-3">
+                            New to our platform?
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-indigo-600 font-medium hover:text-indigo-800 hover:underline transition duration-200">
+                                Create an account
+                            </a>
+                        </p>
+                        <p>
+                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-gray-500 hover:text-indigo-600 transition duration-200">
+                                Resend email confirmation
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <!-- Image/Design Section -->
+        <div class="hidden w-full md:w-1/2 md:flex md:flex-col md:items-center md:justify-center bg-gradient-to-br from-indigo-600 to-blue-700 p-10 text-white">
+            <div class="max-w-md text-center space-y-6">
+                <h3 class="text-3xl font-bold mb-4">Welcome to our Platform</h3>
+                <p class="text-lg opacity-90">Access your account to enjoy our premium features and services.</p>
+                <div class="w-24 h-1 bg-white mx-auto rounded-full opacity-50 my-6"></div>
+                <p class="italic text-blue-100">"Discover a new way to manage your digital experience with our cutting-edge platform."</p>
+            </div>
+        </div>
     </div>
-
-    <!-- Image Section -->
-   @*  <div class="hidden w-full bg-cover bg-center md:w-1/2 md:block" style="background-image: url('path/to/your/image.jpg')"></div> *@
 </div>
 
 @section Scripts {
