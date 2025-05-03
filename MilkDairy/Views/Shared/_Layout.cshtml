@@ -16,16 +16,64 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Custom styles for nested dropdowns */
+        .nested-dropdown {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            width: 200px;
+            background-color: white;
+            border-radius: 0.375rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 150ms ease-in-out;
+            /* Below pointer-events rule is crucial for the fix */
+            pointer-events: none;
+        }
 
+        /* The main dropdown menu */
+        .group-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 150ms ease-in-out;
+            pointer-events: none;
+        }
+
+        /* Show main dropdown when hovering the trigger */
+        .group:hover > .group-dropdown {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* Show nested dropdown only when directly hovering its parent */
+        .dropdown-parent:hover > .nested-dropdown {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* Mobile nested menus */
+        .mobile-nested-menu {
+            margin-left: 1rem;
+            border-left: 2px solid rgba(139, 92, 246, 0.5);
+            padding-left: 0.5rem;
+        }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
     <header class="sticky top-0 z-50 shadow-md">
-        <nav class="bg-gradient-to-r from-purple-600 via-purple-500 to-violet-500">
+        <nav class="bg-gradient-to-r from-purple-700 via-purple-600 to-indigo-600">
             <div class="container mx-auto px-4 py-3">
                 <div class="flex items-center justify-between">
                     <!-- Logo or Brand -->
                     <div class="flex items-center">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="text-xl font-bold text-white">MilkDairy</a>
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="flex items-center">
+                            <i class="fa fa-tint text-white text-2xl mr-2"></i>
+                            <span class="text-xl font-bold text-white">FreshMilk Dairy</span>
+                        </a>
                     </div>
 
                     <!-- Mobile menu button -->
@@ -39,60 +87,86 @@
 
                     <!-- Desktop Navigation -->
                     <div class="hidden md:flex items-center space-x-4">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150">Home</a>
-                        <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150">Order Management</a>
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="px-3 py-2 text-white hover:bg-purple-800 rounded-md transition duration-150">Home</a>
+                        <a asp-area="Customer" asp-controller="Products" asp-action="Index" class="px-3 py-2 text-white hover:bg-purple-800 rounded-md transition duration-150">Products</a>
 
                         @if (User.IsInRole(SD.Role_Admin))
                         {
-                            <!-- Operations Dropdown -->
+                            <!-- Admin Dashboard Dropdown -->
                             <div class="relative group">
-                                <button class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150 flex items-center">
-                                    Operations
+                                <button class="px-3 py-2 text-white hover:bg-purple-800 rounded-md transition duration-1500 flex items-center">
+                                    <i class="fa fa-dashboard mr-1"></i> Admin Dashboard
                                     <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </button>
-                                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0  group-hover:opacity-100 group-hover:visible transition duration-150 z-50">
-                                    <div class="py-1">
-                                        <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Details</a>
-                                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Product</a>
-                                        <a asp-area="Admin" asp-controller="Company" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Company</a>
+                                <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg group-dropdown">
+                                    <!-- Catalog Management -->
+                                    <div class="py-1 dropdown-parent">
+                                        <div class="flex justify-between items-center px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                            <span><i class="fa fa-database mr-2"></i>Catalog Management</span>
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="nested-dropdown">
+                                            <div class="py-1">
+                                                <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                                    <i class="fa fa-list-ul mr-2"></i>Details
+                                                </a>
+                                                <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                                    <i class="fa fa-cube mr-2"></i>Products
+                                                </a>
+                                                <a asp-area="Admin" asp-controller="Company" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                                    <i class="fa fa-building mr-2"></i>Companies
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <!-- Household Items Dropdown -->
-                            <div class="relative group">
-                                <button class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150 flex items-center">
-                                    Household Items
-                                    <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </button>
-                                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0  group-hover:opacity-100 group-hover:visible transition duration-150 z-50">
-                                    <div class="py-1">
-                                        <a asp-area="Admin" asp-controller="subcategoiesMilk" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Milk</a>
+                                    <!-- Product Categories -->
+                                    <div class="py-1 dropdown-parent border-t border-gray-200">
+                                        <div class="flex justify-between items-center px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                            <span><i class="fa fa-tags mr-2"></i>Product Categories</span>
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="nested-dropdown">
+                                            <div class="py-1">
+                                                <a asp-area="Admin" asp-controller="subcategoiesMilk" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                                    <i class="fa fa-tint mr-2"></i>Milk Products
+                                                </a>
+                                                <!-- Future categories can be added here -->
+                                                <a href="#" class="block px-4 py-2 text-gray-400">
+                                                    <i class="fa fa-cheese mr-2"></i>Dairy Products (Coming Soon)
+                                                </a>
+                                                <a href="#" class="block px-4 py-2 text-gray-400">
+                                                    <i class="fa fa-ice-cream mr-2"></i>Frozen Items (Coming Soon)
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <!-- About User Dropdown -->
-                            <div class="relative group">
-                                <button class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150 flex items-center">
-                                    About User
-                                    <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </button>
-                                <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0  group-hover:opacity-100 group-hover:visible transition duration-150 z-50">
-                                    <div class="py-1">
-                                        <a asp-area="Admin" asp-controller="User" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Company User</a>
+                                    <!-- Order Management -->
+                                    <div class="py-1 border-t border-gray-200">
+                                        <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                            <i class="fa fa-shopping-basket mr-2"></i>Order Management
+                                        </a>
+                                    </div>
+
+                                    <!-- User Management -->
+                                    <div class="py-1 border-t border-gray-200">
+                                        <a asp-area="Admin" asp-controller="User" asp-action="Index" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                                            <i class="fa fa-users mr-2"></i>User Management
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         }
 
-                        <a asp-area="Customer" asp-controller="cart" asp-action="Index" class="px-3 py-2 text-white hover:bg-purple-700 rounded-md transition duration-150">
+                        <a asp-area="Customer" asp-controller="cart" asp-action="Index" class="flex items-center px-3 py-2 text-white hover:bg-purple-800 rounded-md transition duration-150">
+                            <i class="fa fa-shopping-cart mr-1"></i>
                             @await Component.InvokeAsync("ShoppingCart")
                         </a>
                     </div>
@@ -107,54 +181,82 @@
             <!-- Mobile Navigation (hidden by default) -->
             <div id="mobile-menu" class="hidden md:hidden bg-purple-800">
                 <div class="px-2 pt-2 pb-3 space-y-1">
-                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="block px-3 py-2 text-white hover:bg-purple-700 rounded-md">Home</a>
-                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="block px-3 py-2 text-white hover:bg-purple-700 rounded-md">Order Management</a>
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="block px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                        <i class="fa fa-home mr-2"></i>Home
+                    </a>
+                    <a asp-area="Customer" asp-controller="Products" asp-action="Index" class="block px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                        <i class="fa fa-list mr-2"></i>Products
+                    </a>
 
                     @if (User.IsInRole(SD.Role_Admin))
                     {
-                        <!-- Mobile Operations Dropdown -->
+                        <!-- Mobile Admin Dashboard -->
                         <div class="relative">
-                            <button id="operations-dropdown-btn" class="w-full flex justify-between items-center px-3 py-2 text-white hover:bg-purple-700 rounded-md">
-                                <span>Operations</span>
+                            <button id="admin-dashboard-btn" class="w-full flex justify-between items-center px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                                <span><i class="fa fa-dashboard mr-2"></i>Admin Dashboard</span>
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </button>
-                            <div id="operations-mobile-menu" class="hidden px-4 py-2 bg-purple-900 rounded-md mt-1">
-                                <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Details</a>
-                                <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Product</a>
-                                <a asp-area="Admin" asp-controller="Company" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Company</a>
-                            </div>
-                        </div>
+                            <div id="admin-dashboard-mobile-menu" class="hidden px-4 py-2 bg-purple-900 rounded-md mt-1">
+                                <!-- Mobile Catalog Management -->
+                                <div class="py-2">
+                                    <button id="catalog-management-btn" class="w-full flex justify-between items-center text-white">
+                                        <span><i class="fa fa-database mr-2"></i>Catalog Management</span>
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="catalog-management-mobile-menu" class="hidden mobile-nested-menu mt-1">
+                                        <a asp-area="Admin" asp-controller="Details" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">
+                                            <i class="fa fa-list-ul mr-2"></i>Details
+                                        </a>
+                                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">
+                                            <i class="fa fa-cube mr-2"></i>Products
+                                        </a>
+                                        <a asp-area="Admin" asp-controller="Company" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">
+                                            <i class="fa fa-building mr-2"></i>Companies
+                                        </a>
+                                    </div>
+                                </div>
 
-                        <!-- Mobile Household Items Dropdown -->
-                        <div class="relative">
-                            <button id="household-dropdown-btn" class="w-full flex justify-between items-center px-3 py-2 text-white hover:bg-purple-700 rounded-md">
-                                <span>Household Items</span>
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <div id="household-mobile-menu" class="hidden px-4 py-2 bg-purple-900 rounded-md mt-1">
-                                <a asp-area="Admin" asp-controller="subcategoiesMilk" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Milk</a>
-                            </div>
-                        </div>
+                                <!-- Mobile Product Categories -->
+                                <div class="py-2 border-t border-purple-700">
+                                    <button id="product-categories-btn" class="w-full flex justify-between items-center text-white">
+                                        <span><i class="fa fa-tags mr-2"></i>Product Categories</span>
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div id="product-categories-mobile-menu" class="hidden mobile-nested-menu mt-1">
+                                        <a asp-area="Admin" asp-controller="subcategoiesMilk" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">
+                                            <i class="fa fa-tint mr-2"></i>Milk Products
+                                        </a>
+                                        <!-- Future categories placeholders -->
+                                        <span class="block py-2 text-gray-400">
+                                            <i class="fa fa-cheese mr-2"></i>Dairy Products (Coming Soon)
+                                        </span>
+                                        <span class="block py-2 text-gray-400">
+                                            <i class="fa fa-ice-cream mr-2"></i>Frozen Items (Coming Soon)
+                                        </span>
+                                    </div>
+                                </div>
 
-                        <!-- Mobile About User Dropdown -->
-                        <div class="relative">
-                            <button id="aboutuser-dropdown-btn" class="w-full flex justify-between items-center px-3 py-2 text-white hover:bg-purple-700 rounded-md">
-                                <span>About User</span>
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                            <div id="aboutuser-mobile-menu" class="hidden px-4 py-2 bg-purple-900 rounded-md mt-1">
-                                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="block py-2 text-gray-100 hover:text-white">Company User</a>
+                                <!-- Mobile Order Management -->
+                                <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="block py-2 text-gray-100 hover:text-white border-t border-purple-700">
+                                    <i class="fa fa-shopping-basket mr-2"></i>Order Management
+                                </a>
+
+                                <!-- Mobile User Management -->
+                                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="block py-2 text-gray-100 hover:text-white border-t border-purple-700">
+                                    <i class="fa fa-users mr-2"></i>User Management
+                                </a>
                             </div>
                         </div>
                     }
 
-                    <a asp-area="Customer" asp-controller="cart" asp-action="Index" class="block px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                    <a asp-area="Customer" asp-controller="cart" asp-action="Index" class="flex items-center px-3 py-2 text-white hover:bg-purple-700 rounded-md">
+                        <i class="fa fa-shopping-cart mr-2"></i>
                         @await Component.InvokeAsync("ShoppingCart")
                     </a>
 
@@ -171,30 +273,55 @@
         @RenderBody()
     </main>
 
-    <footer class="bg-purple-800 text-white py-6">
+    <footer class="bg-gradient-to-r from-purple-700 via-purple-600 to-indigo-600 text-white py-6">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between">
-                <div class="mb-4 md:mb-0">
-                    <h3 class="text-lg font-semibold mb-2">MilkDairy</h3>
-                    <p class="text-sm">Fresh dairy products delivered to your doorstep</p>
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center mb-3">
+                        <i class="fa fa-tint text-white text-2xl mr-2"></i>
+                        <h3 class="text-lg font-semibold">FreshMilk Dairy</h3>
+                    </div>
+                    <p class="text-sm">Fresh, premium dairy products delivered directly to your doorstep.</p>
+                    <p class="text-sm mt-2">Your trusted source for quality dairy since 2020.</p>
                 </div>
+
+                <div class="mb-6 md:mb-0">
+                    <h4 class="text-sm font-semibold mb-3">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-200 hover:text-white text-sm">About Us</a></li>
+                        <li><a href="#" class="text-gray-200 hover:text-white text-sm">Our Products</a></li>
+                        <li><a href="#" class="text-gray-200 hover:text-white text-sm">Delivery Areas</a></li>
+                        <li><a href="#" class="text-gray-200 hover:text-white text-sm">Contact Us</a></li>
+                    </ul>
+                </div>
+
                 <div>
-                    <h4 class="text-sm font-semibold mb-2">Connect with us</h4>
-                    <div class="flex space-x-3">
-                        <a href="#" class="text-white hover:text-gray-300">
-                            <i class="fa fa-facebook"></i>
+                    <h4 class="text-sm font-semibold mb-3">Connect with us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-gray-300 transition">
+                            <i class="fa fa-facebook text-xl"></i>
                         </a>
-                        <a href="#" class="text-white hover:text-gray-300">
-                            <i class="fa fa-twitter"></i>
+                        <a href="#" class="text-white hover:text-gray-300 transition">
+                            <i class="fa fa-twitter text-xl"></i>
                         </a>
-                        <a href="#" class="text-white hover:text-gray-300">
-                            <i class="fa fa-instagram"></i>
+                        <a href="#" class="text-white hover:text-gray-300 transition">
+                            <i class="fa fa-instagram text-xl"></i>
                         </a>
+                        <a href="#" class="text-white hover:text-gray-300 transition">
+                            <i class="fa fa-whatsapp text-xl"></i>
+                        </a>
+                    </div>
+                    <p class="text-sm mt-3">Subscribe to our newsletter</p>
+                    <div class="flex mt-2">
+                        <input type="email" placeholder="Your email" class="px-3 py-1 text-sm rounded-l-md text-gray-800 focus:outline-none w-full">
+                        <button class="bg-white text-purple-700 px-3 py-1 rounded-r-md hover:bg-gray-100 transition">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="mt-6 text-center text-sm">
-                <p>&copy; @DateTime.Now.Year - MilkDairy. All rights reserved.</p>
+            <div class="mt-6 pt-4 border-t border-purple-500 text-center text-sm">
+                <p>&copy; @DateTime.Now.Year - FreshMilk Dairy. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -214,24 +341,24 @@
 
         // Mobile dropdown menus
         document.addEventListener('DOMContentLoaded', function() {
-            // Operations dropdown
-            if (document.getElementById('operations-dropdown-btn')) {
-                document.getElementById('operations-dropdown-btn').addEventListener('click', function() {
-                    document.getElementById('operations-mobile-menu').classList.toggle('hidden');
+            // Admin Dashboard dropdown
+            if (document.getElementById('admin-dashboard-btn')) {
+                document.getElementById('admin-dashboard-btn').addEventListener('click', function() {
+                    document.getElementById('admin-dashboard-mobile-menu').classList.toggle('hidden');
                 });
             }
 
-            // Household items dropdown
-            if (document.getElementById('household-dropdown-btn')) {
-                document.getElementById('household-dropdown-btn').addEventListener('click', function() {
-                    document.getElementById('household-mobile-menu').classList.toggle('hidden');
+            // Catalog Management dropdown
+            if (document.getElementById('catalog-management-btn')) {
+                document.getElementById('catalog-management-btn').addEventListener('click', function() {
+                    document.getElementById('catalog-management-mobile-menu').classList.toggle('hidden');
                 });
             }
 
-            // About user dropdown
-            if (document.getElementById('aboutuser-dropdown-btn')) {
-                document.getElementById('aboutuser-dropdown-btn').addEventListener('click', function() {
-                    document.getElementById('aboutuser-mobile-menu').classList.toggle('hidden');
+            // Product Categories dropdown
+            if (document.getElementById('product-categories-btn')) {
+                document.getElementById('product-categories-btn').addEventListener('click', function() {
+                    document.getElementById('product-categories-mobile-menu').classList.toggle('hidden');
                 });
             }
         });

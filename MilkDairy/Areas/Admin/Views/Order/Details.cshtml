@@ -1,190 +1,291 @@
 ﻿@using MilkDairy.Utility
 @model OrderHeaderVM
 
-<form method="post" class="py-6">
-    <input asp-for="orderHeader.Id" hidden/>
-    <div class="mx-auto max-w-5xl overflow-hidden rounded-lg bg-white shadow-lg">
-        <div class="flex items-center justify-between bg-gray-900 px-6 py-4 text-white">
-            <h2 class="flex items-center gap-2 text-lg font-semibold">
-                <i class="fas fa-shopping-cart"></i> Order Summary
-            </h2>
-            <a asp-action="Index" class="rounded-md border border-blue-400 bg-transparent px-4 py-2 text-sm text-blue-400 transition hover:bg-blue-400 hover:text-white">Back to Orders</a>
+<form method="post" class="py-8">
+    <input asp-for="orderHeader.Id" hidden />
+    <div class="mx-auto max-w-6xl overflow-hidden rounded-xl bg-white shadow-xl">
+        <!-- Header Section with gradient background -->
+        <div class="bg-gradient-to-r from-blue-800 to-indigo-900 px-6 py-5 text-white">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <h2 class="flex items-center gap-3 text-xl font-bold">
+                    <i class="fas fa-shopping-cart text-yellow-300"></i>
+                    <span>Order Details <span class="text-yellow-300">#@Model.orderHeader.Id</span></span>
+                </h2>
+                <a asp-action="Index" class="mt-3 flex items-center justify-center rounded-lg border border-blue-300 bg-blue-900/40 px-4 py-2 text-sm font-medium text-blue-100 backdrop-blur-sm transition hover:bg-blue-700 md:mt-0">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Orders
+                </a>
+            </div>
+        </div>
+
+        <!-- Status Banner -->
+        <div class="w-full bg-gray-100 px-6 py-3">
+            <div class="flex flex-col items-center justify-between gap-3 md:flex-row">
+                <p class="text-gray-600">
+                    <span class="font-medium">Order Date:</span>
+                    <span>@Model.orderHeader.OrderDate.ToShortDateString()</span>
+                </p>
+
+                <div class="status-badge inline-flex items-center rounded-full px-3 py-1 text-sm font-medium @GetStatusClass(Model.orderHeader.OrderStatus)">
+                    <i class="@GetStatusIcon(Model.orderHeader.OrderStatus) mr-2"></i>
+                    <span>@Model.orderHeader.OrderStatus</span>
+                </div>
+
+                <p class="text-gray-600">
+                    <span class="font-medium">Payment:</span>
+                    <span class="@GetPaymentStatusClass(Model.orderHeader.PaymentStatus)">@Model.orderHeader.PaymentStatus</span>
+                </p>
+            </div>
         </div>
 
         <div class="p-6">
-            <div class="grid gap-6 md:grid-cols-2">
-                <div>
-                    <h3 class="text-xl font-semibold text-blue-600">PickUp Details:</h3>
-                    <div class="mt-4 space-y-4">
-                        <div class="flex flex-col">
-                            @if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee)){
-                                <label class="text-gray-600">Name</label>
-                                <input asp-for="orderHeader.Name" type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <span asp-validation-for="orderHeader.Name" class="font-semibold text-red-700"></span>
-                            }
-                            else{
-                                <input asp-for="orderHeader.Name" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
+            <div class="grid gap-8 md:grid-cols-2">
+                <!-- Customer Details Section -->
+                <div class="order-2 md:order-1">
+                    <div class="mb-6 flex items-center">
+                        <div class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Customer Information</h3>
+                    </div>
 
-                        </div>
-                        <div class="flex flex-col">
-                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
-                            {
-                                <label class="text-gray-600">Phone</label>
-                                <input asp-for="orderHeader.PhoneNumber" type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <span asp-validation-for="orderHeader.PhoneNumber" class="font-semibold text-red-700"></span>
-                            }
-                            else{
-                                <input asp-for="orderHeader.PhoneNumber" type="text" readonly class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-
-                        </div>
-                        <div class="flex flex-col">
-                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
-                            {
-                                <label class="text-gray-600">Address</label>
-                                <input asp-for="orderHeader.StreetAddress" type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <span asp-validation-for="orderHeader.StreetAddress" class="font-semibold text-red-700"></span>
-                            }
-                            else{
-                                <input asp-for="orderHeader.StreetAddress" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-                        </div>
-                        <div class="flex flex-col">
-                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee)){
-
-                                <label class="text-gray-600">City</label>
-                                <input asp-for="orderHeader.City" type=" text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <span asp-validation-for="orderHeader.City" class="font-semibold text-red-700"></span>
-                            }
-                            else{
-                                <input asp-for="orderHeader.City" readonly type=" text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-                        </div>
-                        <div class="flex flex-col">
-                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee)){
-                                <label class="text-gray-600">State</label>
-
-                                <input asp-for="orderHeader.State" type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <span asp-validation-for="orderHeader.State" class="font-semibold text-red-700"></span>
-                            }
-                            else
-                            {
-                                <input asp-for="orderHeader.State" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-                        </div>
-                        <div class="flex flex-col">
-                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee)){
-                                <label class="text-gray-600">Zip Code</label>
-                                <input asp-for="orderHeader.PostalCode" type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <span asp-validation-for="orderHeader.PostalCode" class="font-semibold text-red-700"></span>
-                            }
-                            else{
-                                <input asp-for="orderHeader.PostalCode" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-                        </div>
-                        <div class="flex flex-col">
-                            <label class="text-gray-600" >Email</label>
-                            <input asp-for="orderHeader.ApplicationUser.Email" readonly type="text" class="w-full rounded-md border px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                        </div>
-                        <div class="flex flex-col">
-
-                            <label class="text-gray-600">Order Date</label>
-                            <input value="@Model.orderHeader.OrderDate.ToShortDateString()" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-
-                        </div>
-                        <div class="flex flex-col">
-                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
-                            {
-                                <label class="text-gray-600">Carrier</label>
-                                <input id="carrier" asp-for="orderHeader.Carrier" type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-                            else{
-                                <input asp-for="orderHeader.Carrier" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-                        </div>
-                        <div class="flex flex-col">
-                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee)){
-                                <label class="text-gray-600">Tracking</label>
-                                <input id="trackingNumber" asp-for="orderHeader.TrackingNumber" type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-                            else{
-                                <input asp-for="orderHeader.TrackingNumber" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            }
-                        </div>
-                        <div class="flex flex-col">
-                            <label class="text-gray-600">Shipping Date</label>
-                            <input value="@Model.orderHeader.ShippingDate.ToShortDateString()" type="text" class="input-text">
-                        </div>
-                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee)){
-                            <div class="flex flex-col">
-                                <label class="text-gray-600">Session ID</label>
-                                <input asp-for="orderHeader.SessionId" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                        <div class="grid gap-5 md:grid-cols-2">
+                            <div class="form-group">
+                                <label class="mb-1 block text-sm font-medium text-gray-700">Full Name</label>
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
+                                {
+                                    <input asp-for="orderHeader.Name" type="text" class="w-full rounded-md border border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <span asp-validation-for="orderHeader.Name" class="mt-1 text-sm font-medium text-red-600"></span>
+                                }
+                                else
+                                {
+                                    <input asp-for="orderHeader.Name" readonly type="text" class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                }
                             </div>
-                            <div class="flex flex-col">
-                                <label class="text-gray-600">Payment Intent ID</label>
-                                <input asp-for="orderHeader.PaymentIntentId" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                            <div class="form-group">
+                                <label class="mb-1 block text-sm font-medium text-gray-700">Phone Number</label>
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
+                                {
+                                    <input asp-for="orderHeader.PhoneNumber" type="text" class="w-full rounded-md border border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <span asp-validation-for="orderHeader.PhoneNumber" class="mt-1 text-sm font-medium text-red-600"></span>
+                                }
+                                else
+                                {
+                                    <input asp-for="orderHeader.PhoneNumber" type="text" readonly class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                }
                             </div>
-                        }
-                        @if(Model.orderHeader.SessionId == null){
-                            <div class="flex flex-col">
-                                <label class="text-gray-600">Payment Due Date</label>
-                                <input value="@Model.orderHeader.PaymentDueDate.ToShortDateString()" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                            <div class="form-group">
+                                <label class="mb-1 block text-sm font-medium text-gray-700">Email</label>
+                                <input asp-for="orderHeader.ApplicationUser.Email" readonly type="text" class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
                             </div>
-                        }
-                        else{
-                            <div class="flex flex-col">
-                                <label class="text-gray-600">Payment Date</label>
-                                <input value="@Model.orderHeader.PaymentDate.ToShortDateString()" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                            <div class="form-group">
+                                <label class="mb-1 block text-sm font-medium text-gray-700">
+                                    @if (Model.orderHeader.SessionId == null)
+                                    {
+                                        <span>Payment Due Date</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Payment Date</span>
+                                    }
+                                </label>
+                                @if (Model.orderHeader.SessionId == null)
+                                {
+                                    <input value="@Model.orderHeader.PaymentDueDate.ToShortDateString()" readonly type="text" class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                }
+                                else
+                                {
+                                    <input value="@Model.orderHeader.PaymentDate.ToShortDateString()" readonly type="text" class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                }
                             </div>
-                        }
-                        <div class="flex flex-col">
-                            <label class="text-gray-600">Payment Status</label>
-                            <input asp-for="orderHeader.PaymentStatus" readonly type="text" class="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
+
+                    <!-- Shipping Address Section -->
+                    <div class="mt-6 mb-6 flex items-center">
+                        <div class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Shipping Address</h3>
+                    </div>
+
+                    <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                        <div class="grid gap-5 md:grid-cols-2">
+                            <div class="form-group md:col-span-2">
+                                <label class="mb-1 block text-sm font-medium text-gray-700">Street Address</label>
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
+                                {
+                                    <input asp-for="orderHeader.StreetAddress" type="text" class="w-full rounded-md border border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <span asp-validation-for="orderHeader.StreetAddress" class="mt-1 text-sm font-medium text-red-600"></span>
+                                }
+                                else
+                                {
+                                    <input asp-for="orderHeader.StreetAddress" readonly type="text" class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                }
+                            </div>
+
+                            <div class="form-group">
+                                <label class="mb-1 block text-sm font-medium text-gray-700">City</label>
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
+                                {
+                                    <input asp-for="orderHeader.City" type="text" class="w-full rounded-md border border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <span asp-validation-for="orderHeader.City" class="mt-1 text-sm font-medium text-red-600"></span>
+                                }
+                                else
+                                {
+                                    <input asp-for="orderHeader.City" readonly type="text" class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                }
+                            </div>
+
+                            <div class="form-group">
+                                <label class="mb-1 block text-sm font-medium text-gray-700">State</label>
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
+                                {
+                                    <input asp-for="orderHeader.State" type="text" class="w-full rounded-md border border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <span asp-validation-for="orderHeader.State" class="mt-1 text-sm font-medium text-red-600"></span>
+                                }
+                                else
+                                {
+                                    <input asp-for="orderHeader.State" readonly type="text" class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                }
+                            </div>
+
+                            <div class="form-group">
+                                <label class="mb-1 block text-sm font-medium text-gray-700">Zip Code</label>
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
+                                {
+                                    <input asp-for="orderHeader.PostalCode" type="text" class="w-full rounded-md border border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <span asp-validation-for="orderHeader.PostalCode" class="mt-1 text-sm font-medium text-red-600"></span>
+                                }
+                                else
+                                {
+                                    <input asp-for="orderHeader.PostalCode" readonly type="text" class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Details Section -->
                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
                     {
-                        <button type="submit" asp-action="UpdateOrderDetails" class="mt-4 w-full rounded-md bg-yellow-500 py-2 font-medium text-white transition hover:bg-yellow-600">Update Order Details</button>
+                        <div class="mt-6 mb-6 flex items-center">
+                            <div class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Shipping Details</h3>
+                        </div>
+
+                        <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                            <div class="grid gap-5 md:grid-cols-2">
+                                <div class="form-group">
+                                    <label class="mb-1 block text-sm font-medium text-gray-700">Carrier</label>
+                                    <input id="carrier" asp-for="orderHeader.Carrier" type="text" class="w-full rounded-md border border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="mb-1 block text-sm font-medium text-gray-700">Tracking Number</label>
+                                    <input id="trackingNumber" asp-for="orderHeader.TrackingNumber" type="text" class="w-full rounded-md border border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="mb-1 block text-sm font-medium text-gray-700">Shipping Date</label>
+                                    <input value="@Model.orderHeader.ShippingDate.ToShortDateString()" type="text" readonly class="w-full rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                </div>
+
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
+                                {
+                                    <div class="form-group">
+                                        <label class="mb-1 block text-sm font-medium text-gray-700">Session ID</label>
+                                        <input asp-for="orderHeader.SessionId" readonly type="text" class="w-full truncate rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                    </div>
+                                    <div class="form-group md:col-span-2">
+                                        <label class="mb-1 block text-sm font-medium text-gray-700">Payment Intent ID</label>
+                                        <input asp-for="orderHeader.PaymentIntentId" readonly type="text" class="w-full truncate rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 text-gray-600">
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <button type="submit" asp-action="UpdateOrderDetails" class="mt-6 w-full rounded-lg bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            <i class="fas fa-save mr-2"></i> Update Order Details
+                        </button>
                     }
                 </div>
-                <div>
-                    <h3 class="text-xl font-semibold text-blue-600">Order Summary</h3>
-                    <p class="my-4 rounded-md border border-blue-500 py-2 text-center text-blue-500">Order Status - @Model.orderHeader.OrderStatus</p>
-                    @foreach (var details in Model.orderDetails)
-                    {
-                        <ul class="space-y-3">
-                            <li class="flex items-center justify-between rounded-md border bg-gray-100 p-4">
-                                <div>
-                                    <h4 class="font-medium text-blue-600">@details.Product.Name</h4>
-                                    <p class="text-sm text-gray-600">Price: @details.Product.UnitPrice</p>
-                                    <p class="text-sm text-gray-600">Quantity: @details.Count</p>
-                                </div>
-                                <p class="font-medium text-green-500">@((details.Count * details.Product.UnitPrice).ToString("C"))</p>
-                            </li>
-                        </ul>
-                    }
-                    <div class="mt-4 flex items-center justify-between rounded-md bg-blue-600 p-4 text-white">
-                        <h4 class="text-lg font-semibold">@Model.orderHeader.OrderTotal.ToString("c")</h4>
-                       
-                    </div>
-                    <div class="mt-4 space-y-2">
-                        @if(Model.orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment  && Model.orderHeader.OrderStatus== SD.StatusShipped){
-                            <button asp-action="DalyPayment" class="w-full rounded-md bg-green-500 py-2 text-white transition hover:bg-green-600">Pay Now</button>
-                        }
-                        @if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee)){
 
-                            @if(Model.orderHeader.OrderStatus == SD.StatusApproved){
-                        <button asp-action="StartProcessing" class="w-full rounded-md bg-blue-500 py-2 text-white transition hover:bg-blue-600">Start Processing</button>
+                <!-- Order Summary Section -->
+                <div class="order-1 md:order-2">
+                    <div class="mb-6 flex items-center">
+                        <div class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800">Order Summary</h3>
+                    </div>
+
+                    <div class="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+                        <!-- Order Items -->
+                        <div class="max-h-96 overflow-y-auto pr-1" style="scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f1f1;">
+                            @foreach (var details in Model.orderDetails)
+                            {
+                                <div class="mb-3 rounded-lg border border-gray-200 bg-gray-50 p-4 transition-all hover:border-blue-300 hover:shadow-sm">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-grow">
+                                            <h4 class="font-medium text-blue-700">@details.Product.Name</h4>
+                                            <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600">
+                                                <span><i class="fas fa-tag mr-1 text-gray-400"></i> @details.Product.UnitPrice.ToString("C")</span>
+                                                <span><i class="fas fa-times mr-1 text-gray-400"></i> @details.Count</span>
+                                            </div>
+                                        </div>
+                                        <p class="whitespace-nowrap font-medium text-green-600">@((details.Count * details.Product.UnitPrice).ToString("C"))</p>
+                                    </div>
+                                </div>
                             }
-                            @if(Model.orderHeader.OrderStatus == SD.StatusInProcess){
-                        <button asp-action="ShipOrder" type="submit" onclick="return ValidateInput()" class="w-full rounded-md bg-blue-500 py-2 text-white transition hover:bg-blue-600">Ship Order</button>
-                            }
-                            @if(Model.orderHeader.OrderStatus != SD.StatusRefund && Model.orderHeader.OrderStatus != SD.StatusCancelled && Model.orderHeader.OrderStatus != SD.StatusShipped){
-                                <button asp-action="CancelOrder" class="w-full rounded-md bg-red-500 py-2 text-white transition hover:bg-red-600">Cancel Order</button>
-                            }
+                        </div>
+
+                        <!-- Order Totals -->
+                        <div class="mt-4 space-y-3">
+                            <div class="flex items-center justify-between border-t border-gray-200 pt-3">
+                                <span class="text-lg font-medium text-gray-700">Total</span>
+                                <span class="text-xl font-bold text-green-600">@Model.orderHeader.OrderTotal.ToString("c")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-6 space-y-3">
+                        @if (Model.orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment && Model.orderHeader.OrderStatus == SD.StatusShipped)
+                        {
+                            <button asp-action="DalyPayment" class="w-full rounded-lg bg-green-600 py-3 font-medium text-white transition hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                <i class="fas fa-credit-card mr-2"></i> Pay Now
+                            </button>
+                        }
+
+                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Emplyoee))
+                        {
+                            <div class="grid gap-3 md:grid-cols-2">
+                                @if (Model.orderHeader.OrderStatus == SD.StatusApproved)
+                                {
+                                    <button asp-action="StartProcessing" class="w-full rounded-lg bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                        <i class="fas fa-box-open mr-2"></i> Start Processing
+                                    </button>
+                                }
+
+                                @if (Model.orderHeader.OrderStatus == SD.StatusInProcess)
+                                {
+                                    <button asp-action="ShipOrder" type="submit" onclick="return ValidateInput()" class="w-full rounded-lg bg-purple-600 py-3 font-medium text-white transition hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                                        <i class="fas fa-truck mr-2"></i> Ship Order
+                                    </button>
+                                }
+
+                                @if (Model.orderHeader.OrderStatus != SD.StatusRefund && Model.orderHeader.OrderStatus != SD.StatusCancelled && Model.orderHeader.OrderStatus != SD.StatusShipped)
+                                {
+                                    <button asp-action="CancelOrder" class="cancel-order-btn w-full rounded-lg bg-red-600 py-3 font-medium text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                                        <i class="fas fa-times-circle mr-2"></i> Cancel Order
+                                    </button>
+                                }
+                            </div>
                         }
                     </div>
                 </div>
@@ -193,29 +294,134 @@
     </div>
 </form>
 
-
-@section Scripts{
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Input validation for shipping info
         function ValidateInput(){
             if(document.getElementById("trackingNumber").value==""){
                 Swal.fire({
-                    icon:'error',
-                    title:'Oops....',
-                    text:'Please enter tracking number',
+                    icon: 'error',
+                    title: 'Missing Information',
+                    text: 'Please enter a tracking number',
+                    confirmButtonColor: '#3B82F6'
                 });
-                
                 return false;
             }
             if(document.getElementById("carrier").value==""){
                 Swal.fire({
-                    icon:'error',
-                    title:'Oops....',
-                    text:'Please enter Carrir number',
+                    icon: 'error',
+                    title: 'Missing Information',
+                    text: 'Please enter a carrier name',
+                    confirmButtonColor: '#3B82F6'
                 });
                 return false;
             }
             return true;
         }
+
+        // Confirmation dialog for cancel order
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelButtons = document.querySelectorAll('.cancel-order-btn');
+            cancelButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const form = this.closest('form');
+                    const action = this.getAttribute('asp-action');
+
+                    Swal.fire({
+                        title: 'Confirm Cancellation',
+                        text: 'Are you sure you want to cancel this order?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#EF4444',
+                        cancelButtonColor: '#6B7280',
+                        confirmButtonText: 'Yes, cancel it!',
+                        cancelButtonText: 'No, keep it'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.action = '/' + window.location.pathname.split('/')[1] + '/' + action;
+                            form.submit();
+                        }
+                    });
+                });
+            });
+
+            // Add highlight effect to status badge
+            const statusBadge = document.querySelector('.status-badge');
+            if (statusBadge) {
+                // Simple highlight effect without keyframes
+                statusBadge.style.transition = 'opacity 0.5s ease';
+                statusBadge.style.opacity = '0.7';
+                setTimeout(() => {
+                    statusBadge.style.opacity = '1';
+                }, 100);
+            }
+        });
     </script>
+    <style>
+        /* Status badge styling - already defined inline with Tailwind classes */
+
+        /* Custom scrollbar styling for modern browsers */
+        .max-h-96::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .max-h-96::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .max-h-96::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+            .max-h-96::-webkit-scrollbar-thumb:hover {
+                background: #94a3b8;
+            }
+    </style>
+}
+
+@functions {
+    public string GetStatusClass(string status)
+    {
+        return status switch
+        {
+            "Approved" => "bg-blue-100 text-blue-800",
+            "Pending" => "bg-yellow-100 text-yellow-800",
+            "Processing" => "bg-indigo-100 text-indigo-800",
+            "Shipped" => "bg-green-100 text-green-800",
+            "Cancelled" => "bg-red-100 text-red-800",
+            "Refunded" => "bg-gray-100 text-gray-800",
+            _ => "bg-gray-100 text-gray-800"
+        };
+    }
+
+    public string GetStatusIcon(string status)
+    {
+        return status switch
+        {
+            "Approved" => "fas fa-check-circle",
+            "Pending" => "fas fa-clock",
+            "Processing" => "fas fa-cog",
+            "Shipped" => "fas fa-shipping-fast",
+            "Cancelled" => "fas fa-ban",
+            "Refunded" => "fas fa-exchange-alt",
+            _ => "fas fa-info-circle"
+        };
+    }
+
+    public string GetPaymentStatusClass(string paymentStatus)
+    {
+        return paymentStatus switch
+        {
+            "Approved" => "text-green-600",
+            "Pending" => "text-yellow-600",
+            "Delayed Payment" => "text-blue-600",
+            "Rejected" => "text-red-600",
+            _ => "text-gray-600"
+        };
+    }
 }

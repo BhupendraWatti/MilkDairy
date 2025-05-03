@@ -1,63 +1,104 @@
 ﻿@model Details
 
-<div class="container mx-auto max-w-3xl p-6">
-    <div class="rounded-lg bg-gray-100 p-6 shadow-lg">
-        <h1 class="mb-6 text-center text-3xl font-bold text-gray-800">@((Model.ID != 0) ? "Update Item" : "Add New Item")</h1>
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+    <div class="bg-white shadow-lg rounded-lg p-8 border-t-4 border-indigo-600">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">@((Model.ID != 0) ? "Update Item" : "Add New Item")</h1>
+        <p class="text-center text-gray-500 mb-8">Complete the form below to manage inventory items</p>
 
         <!-- Form Start -->
-        <form method="post" class="d-grid grid-cols-2 space-y-6">
+        <form method="post" class="w-full" x-data="formHandler()">
             <input asp-for="@(Model.ID)" hidden />
 
-            <!-- Item Name -->
-            <div>
-                <label for="Items" class="block text-lg font-medium text-gray-700">Item Name</label>
-                <input type="text" asp-for="Items" id="Items" name="Items" 
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
-                    required placeholder="Enter item name" />
-                <span asp-validation-for="Items" class="mt-1 text-sm text-red-600"></span>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <!-- Item Name -->
+                <div class="w-full md:w-1/2 px-3 mb-6">
+                    <div class="relative">
+                        <label for="Items" class="block text-gray-700 text-sm font-bold mb-2">Item Name</label>
+                        <div class="flex">
+                            <div class="flex items-center bg-gray-100 rounded-l px-3">
+                                <i class="fas fa-box text-gray-500"></i>
+                            </div>
+                            <input type="text" asp-for="Items" id="Items" name="Items"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-300 rounded-r py-3 px-4 leading-tight focus:outline-none focus:border-indigo-500"
+                                   required placeholder="Enter item name" />
+                        </div>
+                        <span asp-validation-for="Items" class="text-red-500 text-xs italic mt-1 block"></span>
+                    </div>
+                </div>
+
+                <!-- Manufacturing Date -->
+                <div class="w-full md:w-1/2 px-3 mb-6">
+                    <div class="relative">
+                        <label for="MFD" class="block text-gray-700 text-sm font-bold mb-2">Manufacturing Date</label>
+                        <div class="flex">
+                            <div class="flex items-center bg-gray-100 rounded-l px-3">
+                                <i class="fas fa-calendar-plus text-gray-500"></i>
+                            </div>
+                            <input type="date" asp-for="MFD" id="MFD" name="MFD"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-300 rounded-r py-3 px-4 leading-tight focus:outline-none focus:border-indigo-500"
+                                   required />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expiry Date -->
+                <div class="w-full md:w-1/2 px-3 mb-6">
+                    <div class="relative">
+                        <label for="EXD" class="block text-gray-700 text-sm font-bold mb-2">Expiry Date</label>
+                        <div class="flex">
+                            <div class="flex items-center bg-gray-100 rounded-l px-3">
+                                <i class="fas fa-calendar-times text-gray-500"></i>
+                            </div>
+                            <input type="date" asp-for="EXD" id="EXD" name="EXD"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-300 rounded-r py-3 px-4 leading-tight focus:outline-none focus:border-indigo-500"
+                                   required x-on:change="validateDates()" />
+                        </div>
+                        <span x-text="dateError" x-show="dateError" class="text-red-500 text-xs italic mt-1 block"></span>
+                    </div>
+                </div>
+
+                <!-- Price -->
+                <div class="w-full md:w-1/2 px-3 mb-6">
+                    <div class="relative">
+                        <label for="Price" class="block text-gray-700 text-sm font-bold mb-2">Price</label>
+                        <div class="flex">
+                            <div class="flex items-center bg-gray-100 rounded-l px-3">
+                                <i class="fas fa-dollar-sign text-gray-500"></i>
+                            </div>
+                            <input type="number" asp-for="Price" id="Price" name="Price"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-300 rounded-r py-3 px-4 leading-tight focus:outline-none focus:border-indigo-500"
+                                   required placeholder="Enter price" step="0.01" min="0" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="w-full md:w-1/2 px-3 mb-6">
+                    <div class="relative">
+                        <label for="Quantity" class="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
+                        <div class="flex">
+                            <div class="flex items-center bg-gray-100 rounded-l px-3">
+                                <i class="fas fa-cubes text-gray-500"></i>
+                            </div>
+                            <input type="number" asp-for="Quantity" id="Quantity" name="Quantity"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-300 rounded-r py-3 px-4 leading-tight focus:outline-none focus:border-indigo-500"
+                                   required placeholder="Enter quantity" min="1" step="1" />
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Manufacturing Date -->
-            <div>
-                <label for="MFD" class="block text-lg font-medium text-gray-700">Manufacturing Date</label>
-                <input type="date" asp-for="MFD" id="MFD" name="MFD" 
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
-                    required />
-            </div>
-
-            <!-- Expiry Date -->
-            <div>
-                <label for="EXD" class="block text-lg font-medium text-gray-700">Expiry Date</label>
-                <input type="date" asp-for="EXD" id="EXD" name="EXD" 
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
-                    required />
-            </div>
-            <!-- Price -->
-            <div>
-                <label for="Price" class="block text-lg font-medium text-gray-700">Price</label>
-                <input type="number" asp-for="Price" id="Price" name="Price" 
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
-                    required placeholder="Enter price" />
-            </div>
-
-
-            <!-- Quantity -->
-            <div>
-                <label for="Quantity" class="block text-lg font-medium text-gray-700">Quantity</label>
-                <input type="number" asp-for="Quantity" id="Quantity" name="Quantity" 
-                    class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" 
-                    required placeholder="Enter quantity" />
-            </div>
-
-            <!-- Submit Button -->
-            <div class="flex items-center justify-between">
-                <button type="submit" 
-                    class="rounded-lg bg-blue-600 px-6 py-3 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl">
-                    @((Model.ID != 0) ? "Update Item" : "Add Item")
+            <!-- Submit Button & Back Link -->
+            <div class="flex flex-wrap items-center justify-between mt-8">
+                <button type="submit"
+                        class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transform transition-all duration-300 hover:-translate-y-1 flex items-center">
+                    <i class="fas" :class="formTitle.includes('Update') ? 'fa-save' : 'fa-plus-circle'"></i>
+                    <span class="ml-2">@((Model.ID != 0) ? "Update Item" : "Add Item")</span>
                 </button>
 
-                <a asp-action="Index" 
-                    class="rounded-lg px-4 py-3 text-lg font-semibold text-gray-600 underline transition-all duration-300 hover:text-gray-800">
+                <a asp-action="Index"
+                   class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-3 px-6 border border-gray-300 rounded-lg shadow hover:shadow-md transition-all duration-300 flex items-center">
+                    <i class="fas fa-arrow-left mr-2"></i>
                     Back to List
                 </a>
             </div>
@@ -65,3 +106,30 @@
         <!-- Form End -->
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.3/cdn.min.js"></script>
+<script>
+    function formHandler() {
+        return {
+            dateError: '',
+            formTitle: document.querySelector('h1').innerText,
+
+            validateDates() {
+                const mfd = document.getElementById('MFD').value;
+                const exd = document.getElementById('EXD').value;
+
+                this.dateError = '';
+
+                if (mfd && exd) {
+                    const mfdDate = new Date(mfd);
+                    const exdDate = new Date(exd);
+
+                    if (exdDate <= mfdDate) {
+                        this.dateError = 'Expiry date must be after the manufacturing date';
+                    }
+                }
+            }
+        }
+    }
+</script>
